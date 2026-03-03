@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SNACITO — Pre-Order for March 7th</title>
+    <meta name="description"
+        content="Pre-order your SNACITO snacks for the March 7th college stall. Reserve online, pick up on the day." />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+
+    <!-- EmailJS -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+    <!-- ═══════════════════════════════════ TICKER ══════════════════════ -->
+    <div class="ticker-wrap" aria-hidden="true">
+        <div class="ticker-track">
+            <span>Pre-Order Open</span><span>March 7th Stall</span>
+            <span>Skip the Queue</span><span>3 Easy Steps</span>
+            <span>Waffles</span><span>Choco Puffs</span><span>BYOB Chips</span>
+            <span>Pre-Order Open</span><span>March 7th Stall</span>
+            <span>Skip the Queue</span><span>3 Easy Steps</span>
+            <span>Waffles</span><span>Choco Puffs</span><span>BYOB Chips</span>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════ HERO ════════════════════════ -->
+    <header class="hero">
+        <div class="hero-orb"></div>
+        <a href="/" class="back-link">&#8592; Back to Menu</a>
+        <div class="hero-badge">&#x1F4C5; March 7th &nbsp;·&nbsp; College Food Court</div>
+        <h1>SNA<span>CITO</span></h1>
+        <div class="hero-sub">P &nbsp;R &nbsp;E &nbsp;‑ &nbsp;O &nbsp;R &nbsp;D &nbsp;E &nbsp;R</div>
+        <div class="hero-ornament">
+            <div class="hero-line"></div>
+            <div class="hero-star">✶</div>
+            <div class="hero-line right"></div>
+        </div>
+        <div class="hero-tagline">Reserve your snacks &nbsp;·&nbsp; Pay 10% now &nbsp;·&nbsp; Pick up on March 7th</div>
+    </header>
+
+    <!-- ═══════════════════════════════════ STEP INDICATOR ══════════════ -->
+    <div class="step-bar">
+        <div class="step-bar-inner">
+
+            <div class="step-item active" id="si-1">
+                <div class="step-circle">
+                    <span class="step-num">1</span>
+                    <svg class="step-check" viewBox="0 0 24 24" fill="none">
+                        <polyline points="20 6 9 17 4 12" stroke="white" stroke-width="2.5" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </div>
+                <div class="step-label">Choose Items</div>
+            </div>
+
+            <div class="step-connector" id="sc-1"></div>
+
+            <div class="step-item" id="si-2">
+                <div class="step-circle">
+                    <span class="step-num">2</span>
+                    <svg class="step-check" viewBox="0 0 24 24" fill="none">
+                        <polyline points="20 6 9 17 4 12" stroke="white" stroke-width="2.5" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </div>
+                <div class="step-label">Your Details</div>
+            </div>
+
+            <div class="step-connector" id="sc-2"></div>
+
+            <div class="step-item" id="si-3">
+                <div class="step-circle">
+                    <span class="step-num">3</span>
+                    <svg class="step-check" viewBox="0 0 24 24" fill="none">
+                        <polyline points="20 6 9 17 4 12" stroke="white" stroke-width="2.5" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </div>
+                <div class="step-label">Pay &amp; Confirm</div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════ MAIN ════════════════════════ -->
+    <main class="wizard-main">
+
+        <!-- ─── STEP 1: Choose Items ────────────────────────────────────── -->
+        <div class="step-panel active" id="step-1">
+
+            <div class="panel-header">
+                <div class="panel-title">What would you like?</div>
+                <div class="panel-sub">Add items below. You can order as many as you'd like.</div>
+            </div>
+
+            <!-- WAFFLES -->
+            <div class="category-card">
+                <div class="cat-header">
+                    <div class="cat-icon">🧇</div>
+                    <div>
+                        <div class="cat-title">Waffles</div>
+                        <div class="cat-desc">Crispy outside, fluffy inside — made fresh to order</div>
+                    </div>
+                </div>
+
+                <div class="sub-label">Single Layer</div>
+                <div class="item-row" data-name="Waffle · Single · Milk Choco" data-price="69">
+                    <div class="item-info"><span class="item-name">Milk Chocolate</span><span
+                            class="item-price">₹69</span></div>
+                    <div class="qty-wrap"><button class="qty-btn minus">−</button><span class="qty-val">0</span><button
+                            class="qty-btn plus">+</button></div>
+                </div>
+                <div class="item-row" data-name="Waffle · Single · Dark Choco" data-price="69">
+                    <div class="item-info"><span class="item-name">Dark Chocolate</span><span
+                            class="item-price">₹69</span></div>
+                    <div class="qty-wrap"><button class="qty-btn minus">−</button><span class="qty-val">0</span><button
+                            class="qty-btn plus">+</button></div>
+                </div>
+                <div class="item-row" data-name="Waffle · Single · Mix Choco" data-price="79">
+                    <div class="item-info"><span class="item-name">Mix Chocolate</span><span
+                            class="item-price">₹79</span></div>
+                    <div class="qty-wrap"><button class="qty-btn minus">−</button><span class="qty-val">0</span><button
+                            class="qty-btn plus">+</button></div>
+                </div>
+                <div class="item-row" data-name="Waffle · Single · KitKat" data-price="89">
+                    <div class="item-info"><span class="item-name">KitKat</span><span class="item-price">₹89</span>
+                    </div>
+                    <div class="qty-wrap"><button class="qty-btn minus">−</button><span class="qty-val">0</span><button
+                            class="qty-btn plus">+</button></div>
+                </div>
+
+                <div class="sub-label">Double Layer</div>
+                <div class="item-row" data-name="Waffle · Double · Milk Choco" data-price="99">
+                    <div class="item-info"><span class="item-name">Milk Chocolate</span><span
+                            class="item-price">₹99</span></div>
+                    <div class="qty-wrap"><button class="qty-btn minus">−</button><span class="qty-val">0</span><button
+                            class="qty-btn plus">+</button></div>
+                </div>
+                <div class="item-row" data-name="Waffle · Double · Dark Choco" data-price="99">
+                    <div class="item-info"><span class="item-name">Dark Chocolate</span><span
+                            class="item-price">₹99</span></div>
+                    <div class="qty-wrap"><button class="qty-btn minus">−</button><span class="qty-val">0</span><button
+                            class="qty-btn plus">+</button></div>
+                </div>
+                <div class="item-row" data-name="Waffle · Double · Mix Choco" data-price="109">
+                    <div class="item-info"><span class="item-name">Mix Chocolate</span><span
+                            class="item-price">₹109</span></div>
+                    <div class="qty-wrap"><button class="qty-btn minus">−</button><span class="qty-val">0</span><button
+                            class="qty-btn plus">+</button></div>
+                </div>
+                <div class="item-row" data-name="Waffle · Double · KitKat" data-price="109">
+                    <div class="item-info"><span class="item-name">KitKat</span><span class="item-price">₹109</span>
+                    </div>
+                    <div class="qty-wrap"><button class="qty-btn minus">−</button><span class="qty-val">0</span><button
+                            class="qty-btn plus">+</button></div>
+                </div>
+
+                <div class="sub-label">Triple Layer</div>
+                <div class="item-row" data-name="Waffle · Triple · Milk Choco" data-price="119">
+                    <div class="item-info"><span class="item-name">Milk Chocolate</span><span
+                            class="item-price">₹119</span></div>
+                    <div class="qty-wrap"><button class="qty-btn minus">−</button><span class="qty-val">0</span><button
+                            class="qty-btn plus">+</button></div>
+                </div>
+                <div class="item-row" data-name="Waffle · Triple · Dark Choco" data-price="119">
+                    <div class="item-info"><span class="item-name">Dark Chocolate</span><span
+                            class="item-price">₹119</span></div>
+                    <div class="qty-wrap"><button class="qty-btn minus">−</button><span class="qty-val">0</span><button
+                            class="qty-btn plus">+</button></div>
+                </div>
+                <div class="item-row" data-name="Waffle · Triple · Mix Choco" data-price="129">
+                    <div class="item-info"><span class="item-name">Mix Chocolate</span><span
+                            class="item-price">₹129</span></div>
+                    <div class="qty-wrap"><button class="qty-btn minus">−</button><span class="qty-val">0</span><button
+                            class="qty-btn plus">+</button></div>
+                </div>
+                <div class="item-row" data-name="Waffle · Triple · KitKat" data-price="139">
+                    <div class="item-info"><span class="item-name">KitKat</span><span class="item-price">₹139</span>
+                    </div>
+                    <div class="qty-wrap"><button class="qty-btn minus">−</button><span class="qty-val">0</span><button
+                            class="qty-btn plus">+</button></div>
+                </div>
+            </div>
+
+            <!-- MINI CHOCO PUFFS -->
+            <div class="category-card">
+                <div class="cat-header">
+                    <div class="cat-icon">🍫</div>
+                    <div>
+                        <div class="cat-title">Mini Choco Puffs</div>
+                        <div class="cat-desc">Choose your chocolate — Milk, Dark, or Mix</div>
+                    </div>
+                </div>
+
+                <div class="choco-grid">
+                    <div class="choco-head"><span>Pack</span><span>Milk</span><span>Dark</span><span>Mix</span></div>
+
+                    <div class="choco-price-row"><span class="cpk">5
+                            Pieces</span><span>₹69</span><span>₹69</span><span>₹79</span></div>
+                    <div class="choco-qty-row">
+                        <span class="cqk">Qty</span>
+                        <div class="qty-wrap sm" data-name="Choco Puffs · 5pc · Milk" data-price="69"><button
+                                class="qty-btn minus">−</button><span class="qty-val">0</span><button
+                                class="qty-btn plus">+</button></div>
+                        <div class="qty-wrap sm" data-name="Choco Puffs · 5pc · Dark" data-price="69"><button
+                                class="qty-btn minus">−</button><span class="qty-val">0</span><button
+                                class="qty-btn plus">+</button></div>
+                        <div class="qty-wrap sm" data-name="Choco Puffs · 5pc · Mix" data-price="79"><button
+                                class="qty-btn minus">−</button><span class="qty-val">0</span><button
+                                class="qty-btn plus">+</button></div>
+                    </div>
+
+                    <div class="choco-price-row"><span class="cpk">8
+                            Pieces</span><span>₹89</span><span>₹89</span><span>₹109</span></div>
+                    <div class="choco-qty-row">
+                        <span class="cqk">Qty</span>
+                        <div class="qty-wrap sm" data-name="Choco Puffs · 8pc · Milk" data-price="89"><button
+                                class="qty-btn minus">−</button><span class="qty-val">0</span><button
+                                class="qty-btn plus">+</button></div>
+                        <div class="qty-wrap sm" data-name="Choco Puffs · 8pc · Dark" data-price="89"><button
+                                class="qty-btn minus">−</button><span class="qty-val">0</span><button
+                                class="qty-btn plus">+</button></div>
+                        <div class="qty-wrap sm" data-name="Choco Puffs · 8pc · Mix" data-price="109"><button
+                                class="qty-btn minus">−</button><span class="qty-val">0</span><button
+                                class="qty-btn plus">+</button></div>
+                    </div>
+
+                    <div class="choco-price-row"><span class="cpk">12
+                            Pieces</span><span>₹119</span><span>₹119</span><span>₹139</span></div>
+                    <div class="choco-qty-row">
+                        <span class="cqk">Qty</span>
+                        <div class="qty-wrap sm" data-name="Choco Puffs · 12pc · Milk" data-price="119"><button
+                                class="qty-btn minus">−</button><span class="qty-val">0</span><button
+                                class="qty-btn plus">+</button></div>
+                        <div class="qty-wrap sm" data-name="Choco Puffs · 12pc · Dark" data-price="119"><button
+                                class="qty-btn minus">−</button><span class="qty-val">0</span><button
+                                class="qty-btn plus">+</button></div>
+                        <div class="qty-wrap sm" data-name="Choco Puffs · 12pc · Mix" data-price="139"><button
+                                class="qty-btn minus">−</button><span class="qty-val">0</span><button
+                                class="qty-btn plus">+</button></div>
+                    </div>
+                </div>
+
+                <!-- Add-Ons -->
+                <div class="addons-box">
+                    <div class="addons-label">Choco Puffs Add-Ons</div>
+                    <div class="addon-chips">
+                        <label class="addon-chip"><input type="checkbox" data-addon="Choco Filling"
+                                data-price="10"><span>Choco Filling <em>+₹10</em></span></label>
+                        <label class="addon-chip"><input type="checkbox" data-addon="Choco Chips"
+                                data-price="10"><span>Choco Chips <em>+₹10</em></span></label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BYOB -->
+            <div class="category-card byob-card">
+                <div class="byob-glow"></div>
+                <div class="cat-header">
+                    <div class="cat-icon">🍟</div>
+                    <div>
+                        <div class="cat-title" style="color:#f0b429;">BYOB Chips</div>
+                        <div class="cat-desc" style="color:rgba(255,255,255,0.5);">Bring Your Own Bag — Normal Bag with
+                            Veggies (Pyaz &amp; Tamatar)</div>
+                    </div>
+                </div>
+
+                <div class="item-row dark" data-name="BYOB Bag" data-price="39">
+                    <div class="item-info"><span class="item-name">BYOB Bag</span><span class="item-price">₹39</span>
+                    </div>
+                    <div class="qty-wrap"><button class="qty-btn minus">−</button><span class="qty-val">0</span><button
+                            class="qty-btn plus">+</button></div>
+                </div>
+
+                <div class="flavour-section">
+                    <div class="flavour-label">Preferred Flavour</div>
+                    <div class="flavour-chips">
+                        <label class="flavour-chip"><input type="radio" name="byob-flavour"
+                                value="Tomato"><span>Tomato</span></label>
+                        <label class="flavour-chip"><input type="radio" name="byob-flavour"
+                                value="Indian Masala"><span>Indian Masala</span></label>
+                        <label class="flavour-chip"><input type="radio" name="byob-flavour"
+                                value="Salted"><span>Salted</span></label>
+                        <label class="flavour-chip"><input type="radio" name="byob-flavour"
+                                value="Doritos"><span>Doritos</span></label>
+                    </div>
+                </div>
+
+                <div class="addons-box dark">
+                    <div class="addons-label">BYOB Add-Ons</div>
+                    <div class="addon-chips">
+                        <label class="addon-chip dark"><input type="checkbox" data-addon="Mayo"
+                                data-price="10"><span>Mayo <em>+₹10</em></span></label>
+                        <label class="addon-chip dark"><input type="checkbox" data-addon="Tandoori Mayo"
+                                data-price="15"><span>Tandoori Mayo <em>+₹15</em></span></label>
+                        <label class="addon-chip dark"><input type="checkbox" data-addon="Hot Sauce"
+                                data-price="15"><span>Hot Sauce <em>+₹15</em></span></label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Floating cart bar -->
+            <div class="cart-bar" id="cart-bar" style="display:none;">
+                <div class="cart-bar-info">
+                    <span id="cart-count">0 items</span>
+                    <span class="cart-dot">·</span>
+                    <span id="cart-total">₹0</span>
+                </div>
+                <button class="btn-next" id="btn-to-step2">Continue &rarr;</button>
+            </div>
+
+            <div class="step-nav">
+                <div></div>
+                <button class="btn-next" id="btn-to-step2-bottom" disabled>Continue &rarr;</button>
+            </div>
+        </div>
+
+        <!-- ─── STEP 2: Your Details ─────────────────────────────────────── -->
+        <div class="step-panel" id="step-2">
+
+            <div class="panel-header">
+                <div class="panel-title">Your Details</div>
+                <div class="panel-sub">We'll send a confirmation to your email and a reminder via WhatsApp.</div>
+            </div>
+
+            <div class="form-card">
+                <div class="form-field">
+                    <label for="f-name">Full Name <span class="req">*</span></label>
+                    <input type="text" id="f-name" placeholder="e.g. Riya Sharma" autocomplete="name" />
+                </div>
+                <div class="form-field">
+                    <label for="f-email">Email Address <span class="req">*</span></label>
+                    <input type="email" id="f-email" placeholder="e.g. riya@example.com" autocomplete="email" />
+                </div>
+                <div class="form-field">
+                    <label for="f-phone">WhatsApp Number <span class="req">*</span></label>
+                    <div class="phone-wrap">
+                        <span class="phone-prefix">+91</span>
+                        <input type="tel" id="f-phone" placeholder="9876543210" maxlength="10" pattern="[0-9]{10}"
+                            autocomplete="tel" />
+                    </div>
+                </div>
+                <div class="form-field">
+                    <label for="f-rollno">Roll No. / College ID <span class="opt">(optional)</span></label>
+                    <input type="text" id="f-rollno" placeholder="e.g. 2023BCS042" />
+                </div>
+                <div class="form-field">
+                    <label for="f-note">Special Note <span class="opt">(optional)</span></label>
+                    <textarea id="f-note" rows="3" placeholder="Allergies, extra crispy, less sweet…"></textarea>
+                </div>
+            </div>
+
+            <div class="step-nav">
+                <button class="btn-back" id="btn-back-1">&#8592; Back</button>
+                <button class="btn-next" id="btn-to-step3">Review Order &rarr;</button>
+            </div>
+        </div>
+
+        <!-- ─── STEP 3: Review & Pay ─────────────────────────────────────── -->
+        <div class="step-panel" id="step-3">
+
+            <div class="panel-header">
+                <div class="panel-title">Review &amp; Pay</div>
+                <div class="panel-sub">10% advance secures your slot. Balance is paid at the stall on March 7th.</div>
+            </div>
+
+            <!-- Order summary rendered by JS -->
+            <div class="summary-card" id="summary-card"></div>
+
+            <!-- Totals -->
+            <div class="totals-card">
+                <div class="totals-row">
+                    <span>Order Total</span>
+                    <span id="s-total">₹0</span>
+                </div>
+                <div class="totals-row advance">
+                    <span>10% Advance (pay now)</span>
+                    <span id="s-advance">₹0</span>
+                </div>
+                <div class="totals-row balance">
+                    <span>Balance (pay at stall)</span>
+                    <span id="s-balance">₹0</span>
+                </div>
+            </div>
+
+            <div class="disclaimer">
+                ⚠️ &nbsp;Your order is <strong>confirmed only after the advance payment</strong>. We'll send a
+                confirmation email and WhatsApp message with your order ID.
+            </div>
+
+            <div class="step-nav">
+                <button class="btn-back" id="btn-back-2">&#8592; Back</button>
+                <button class="btn-pay" id="btn-pay">
+                    <span id="pay-text">Pay Advance ₹<span id="pay-amount">0</span> →</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- ─── SUCCESS ───────────────────────────────────────────────────── -->
+        <div class="step-panel" id="step-success">
+            <div class="success-wrap">
+                <div class="success-icon">🎉</div>
+                <div class="success-title">Order Confirmed!</div>
+                <div class="success-sub">
+                    Hey <strong id="succ-name"></strong>! Your pre-order is locked in.<br>
+                    Check your email for the confirmation. See you at the stall on <strong>March 7th</strong>!
+                </div>
+                <div class="success-order-id">Order ID: <span id="succ-order-id"></span></div>
+                <a href="/" class="btn-home">← Browse Menu</a>
+            </div>
+        </div>
+
+        <!-- ═══════════════ UPI PAYMENT MODAL ═══════════════ -->
+        <div class="upi-overlay" id="upi-overlay" aria-modal="true" role="dialog" style="display:none;">
+            <div class="upi-modal">
+                <button class="upi-close" id="upi-close" aria-label="Close">✕</button>
+
+                <div class="upi-header">
+                    <div class="upi-title">Pay ₹<span id="upi-amount">0</span> via UPI</div>
+                    <div class="upi-sub">Scan or tap to open any UPI app</div>
+                </div>
+
+                <!-- QR Code -->
+                <div class="upi-qr-wrap">
+                    <img id="upi-qr-img" src="" alt="UPI QR Code" width="180" height="180"
+                        style="border-radius:12px;border:6px solid white;box-shadow:0 8px 30px rgba(92,45,10,0.15);" />
+                </div>
+
+                <!-- UPI ID display -->
+                <div class="upi-id-row">
+                    <span class="upi-id-label">UPI ID</span>
+                    <span class="upi-id-val" id="upi-id-display"></span>
+                    <button class="upi-copy" id="upi-copy-btn" title="Copy UPI ID">Copy</button>
+                </div>
+
+                <!-- Open in app button -->
+                <a class="btn-upi-app" id="btn-upi-app" href="#">Open in UPI App →</a>
+
+                <div class="upi-instructions">
+                    <div class="upi-step"><span>1</span> Scan QR or open your UPI app</div>
+                    <div class="upi-step"><span>2</span> Pay exactly ₹<span id="upi-amt-inline">0</span> (10% advance)
+                    </div>
+                </div>
+
+
+                <button class="btn-paid" id="btn-paid">✅ &nbsp;I've Paid!!</button>
+
+                <div class="upi-note">⚠️ Orders are confirmed only after we verify your payment.</div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- ═══════════════════════════════════ FOOTER ══════════════════════ -->
+    <div class="footer-divider"></div>
+    <footer>
+        <div class="footer-brand">SNACITO</div>
+        <div class="footer-tagline">Fresh &nbsp;·&nbsp; Handcrafted &nbsp;·&nbsp; Made With Love</div>
+        <div class="footer-loc">📍 College Food Court &nbsp;·&nbsp; March 7th</div>
+        <div class="footer-love">Made with <span>♥</span> for the best snacks in campus</div>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+
+</html>
