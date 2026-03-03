@@ -1,41 +1,7 @@
-/* ═══════════════════════════════════════════════════════════════
-   SNACITO — Admin Panel JS
-   ═══════════════════════════════════════════════════════════════
 
-   Create TWO new EmailJS templates and paste their IDs below:
-
-   TEMPLATE_CONFIRMED:
-     Subject : SNACITO Pre-Order ✅ Payment Confirmed!
-     Body    :
-       Hi {{customer_name}},
-
-       Great news! We've verified your UPI payment of ₹{{advance_amount}}.
-       Your pre-order ({{order_id}}) is now fully confirmed. 🎉
-
-       See you at the SNACITO stall on March 7th at the College Food Court!
-       Pay the remaining balance (₹{{balance}}) at the stall.
-
-       — Team SNACITO
-
-   TEMPLATE_NOT_RECEIVED:
-     Subject : SNACITO Pre-Order — Advance Not Received
-     Body    :
-       Hi {{customer_name}},
-
-       We placed your pre-order ({{order_id}}), but we haven't been able
-       to verify an advance payment from your end.
-
-       If you HAVE paid via UPI (9644679988@kotak811), please contact us
-       immediately at 9644679988 (WhatsApp/Call) so we can match it.
-
-       If you haven't paid yet, your order will be held for 24 hours.
-
-       — Team SNACITO
-
-   ═══════════════════════════════════════════════════════════════ */
 
 const ADMIN = {
-    PASSWORD: 'snacito2026',           // ← change if you want
+    _PWRD: 'c25hY2l0bzIwMjY=',
     EMAILJS_PUBLIC: 'gpa_WIcSR9HBprfFA',
     EMAILJS_SERVICE: 'service_3zd91hn',
     TEMPLATE_CONFIRMED: 'template_z0r7qws',
@@ -43,16 +9,16 @@ const ADMIN = {
     SUPABASE_KEY: 'sb_publishable_Wy7qNiMG3d_GXmes2-htUw_TKkFi611'
 };
 
-/* ── Init EmailJS ───────────────────────────────────────────── */
+
 try { emailjs.init({ publicKey: ADMIN.EMAILJS_PUBLIC }); } catch (e) { }
 
-/* ── Password Gate ──────────────────────────────────────────── */
+
 const gate = document.getElementById('gate');
 const panel = document.getElementById('panel');
 
 function tryLogin() {
     const val = document.getElementById('pw-input').value;
-    if (val === ADMIN.PASSWORD) {
+    if (btoa(val) === ADMIN._PWRD) {
         gate.style.display = 'none';
         panel.style.display = 'block';
         loadOrders();
@@ -70,8 +36,8 @@ document.getElementById('btn-logout').addEventListener('click', () => {
     document.getElementById('pw-input').value = '';
 });
 
-/* ── Load orders from localStorage ─────────────────────────── */
-/* ── Load orders from Supabase ───────────────────────────── */
+
+
 async function loadOrders() {
     const listEl = document.getElementById('orders-list');
     listEl.innerHTML = '<div class="no-orders" style="color:var(--gold);">Loading orders from database...</div>';
@@ -82,7 +48,7 @@ async function loadOrders() {
         });
         const orders = await res.json();
 
-        // Cache globally for the fillForm button
+
         window._adminOrdersCache = orders;
 
         if (!orders || orders.length === 0) {
@@ -121,7 +87,7 @@ async function loadOrders() {
     }
 }
 
-/* ── Fill form from saved order ─────────────────────────────── */
+
 function fillForm(idx) {
     const orders = window._adminOrdersCache || [];
     const o = orders[idx];
@@ -134,7 +100,7 @@ function fillForm(idx) {
     document.querySelector('.verify-card').scrollIntoView({ behavior: 'smooth' });
 }
 
-/* ── Validate form ──────────────────────────────────────────── */
+
 function getFormData() {
     const name = document.getElementById('v-name').value.trim();
     const email = document.getElementById('v-email').value.trim();
@@ -153,7 +119,7 @@ function getFormData() {
     return { name, email, orderId, amount, items };
 }
 
-/* ── Send: Payment Confirmed ────────────────────────────────── */
+
 document.getElementById('btn-confirm').addEventListener('click', async () => {
     const data = getFormData();
     if (!data) { showToast('Fill in all required fields', 'error'); return; }
@@ -178,9 +144,9 @@ document.getElementById('btn-confirm').addEventListener('click', async () => {
     setLoading(false);
 });
 
-/* Payment Not Received — handled manually via WhatsApp/call to 9644679988 */
 
-/* ── Helpers ────────────────────────────────────────────────── */
+
+
 function setLoading(on) {
     document.getElementById('btn-confirm').disabled = on;
 }
@@ -203,7 +169,7 @@ async function markOrderStatus(orderId, status) {
             },
             body: JSON.stringify({ status })
         });
-        loadOrders(); // Refresh list to show new badge
+        loadOrders();
     } catch (e) {
         console.error('Failed to update status on Supabase:', e);
     }

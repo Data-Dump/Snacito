@@ -45,7 +45,7 @@
             min-height: 100vh;
         }
 
-        /* ── Password Gate ─────────────────────────── */
+
         #gate {
             min-height: 100vh;
             display: flex;
@@ -140,7 +140,7 @@
             display: none;
         }
 
-        /* ── Admin Panel ───────────────────────────── */
+
         #panel {
             display: none;
         }
@@ -200,7 +200,7 @@
             padding: 36px 20px 80px;
         }
 
-        /* ── Section headers ───────────────────────── */
+
         .section-title {
             font-size: 11px;
             font-weight: 700;
@@ -212,7 +212,7 @@
             border-left: 3px solid var(--gold-b);
         }
 
-        /* ── Verify Card ───────────────────────────── */
+
         .verify-card {
             background: var(--card);
             border: 1px solid var(--border);
@@ -338,7 +338,7 @@
             transform: none;
         }
 
-        /* ── Toast ─────────────────────────────────── */
+
         #toast {
             position: fixed;
             bottom: 28px;
@@ -371,7 +371,7 @@
             color: var(--red);
         }
 
-        /* ── Pending orders (localStorage) ─────────── */
+
         .orders-list {
             display: flex;
             flex-direction: column;
@@ -482,7 +482,7 @@
 
 <body>
 
-    <!-- ════════════════════ PASSWORD GATE ════════════════════ -->
+
     <div id="gate">
         <div class="gate-logo">SNA<span>CITO</span></div>
         <div class="gate-sub">Admin Panel</div>
@@ -495,7 +495,7 @@
         </div>
     </div>
 
-    <!-- ════════════════════ ADMIN PANEL ══════════════════════ -->
+
     <div id="panel">
 
         <div class="topbar">
@@ -508,7 +508,7 @@
 
         <div class="admin-main">
 
-            <!-- ── Pending Orders ───────────────────────────── -->
+
             <div class="section-title" style="margin-bottom:16px;">Recorded Orders</div>
             <div class="orders-list" id="orders-list">
                 <div class="no-orders">No orders recorded in this browser yet.</div>
@@ -518,7 +518,7 @@
                 <div class="section-title">Send Verification Email</div>
             </div>
 
-            <!-- ── Verify Form ──────────────────────────────── -->
+
             <div class="verify-card">
                 <div class="verify-desc">
                     Look up the customer's order in your email → fill in their details → send the appropriate email.
@@ -560,7 +560,7 @@
 
     <div id="toast"></div>
 
-    <script src="admin.js"></script>
+    <script src="/admin/admin.js"></script>
 </body>
 
 </html>

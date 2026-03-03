@@ -1,69 +1,62 @@
-# SNACITO — Digital Menu 🍫
+# SNACITO — The Complete Digital Platform 🍫
 
-A premium digital menu website for **SNACITO**, a handcrafted snack brand at the college food court.  
-Built as a single-page web app — mobile & desktop optimised, ready to deploy on Vercel / Netlify / GitHub Pages.
+A premium, full-featured web application for **SNACITO**, a handcrafted snack brand at the Aarohan Stall Area.
+This repository contains the complete three-part frontend platform: the Digital Menu, the Pre-Order Wizard, and the Admin Panel. 
+
+Built entirely with pure HTML, CSS, and Vanilla JavaScript (zero frameworks). The codebase is meticulously clean and 100% comment-free for production delivery.
 
 ---
 
-## 📁 Project Structure
+## 📁 Architecture
 
-```
+```text
 snacito/
-├── index.html        ← Main HTML (structure & content)
+├── index.html                ← The Digital Menu (Landing Page)
 ├── css/
-│   └── style.css     ← All styles (variables, layout, components)
-├── js/
-│   └── main.js       ← Tab switching + scroll-reveal logic
-└── README.md
+│   └── style.css             ← Core design system & utilities
+├── pre-order/
+│   ├── index.html            ← The 3-Step Pre-Order Wizard
+│   ├── style.css             ← Wizard-specific UI styles
+│   └── main.js               ← Complex cart logic, EmailJS, Razorpay, Supabase
+└── admin/
+    ├── index.html            ← Secure Dashboard UI
+    └── admin.js              ← Authentication, Order fetching, WhatsApp templates
 ```
 
 ---
 
-## 🍽️ Menu Categories
+## 🚀 The Three Apps
 
-| Category | Items |
-|---|---|
-| 🧇 Waffles | Single / Double / Triple Layer — Milk, Dark, Mix, KitKat |
-| 🍫 Mini Choco Puffs | 5 / 8 / 12 pieces — Milk, Dark, Mix |
-| 🍟 BYOB | Normal Bag with Veggies — ₹39 |
+### 1. The Digital Menu (`/`)
+An elegant, fine-dining inspired digital menu. Features smooth scroll-reveals, sticky category filters, dotted price leaders, and high-performance CSS animations. 
 
----
+### 2. The Pre-Order Wizard (`/pre-order`)
+A highly dynamic, mobile-first ordering experience:
+* **Dynamic Form Generation:** "Mini Choco Puffs" and "BYOB Chips" dynamically generate individual sub-configuration blocks (e.g., "Pack 1", "Pack 2") based on quantity selected, allowing per-item customization (Milk/Dark/Mix coatings + Addons).
+* **Live Cart Calculation:** Real-time calculation of totals, mix-premiums, addon costs, and the 10% UPI advance requirement.
+* **Integrations:**
+    * **EmailJS:** Sends professional, HTML-formatted email receipts to customers and blind-copies to the owner.
+    * **Supabase:** Pushes the finalized order securely to a PostgreSQL database.
+    * **Razorpay:** Built-in UPI intent & QR code generation.
 
-## ✨ Features
-
-- Animated gold ticker strip
-- Shimmer effect on hero title
-- Sticky filter nav tabs (All / Waffles / Choco Puffs / BYOB)
-- Dotted price leaders (classic fine-dining menu style)
-- Scroll-reveal animations via IntersectionObserver
-- Fully responsive — mobile & desktop
-- Zero dependencies — pure HTML, CSS, JS
-
----
-
-## 🚀 Deploy
-
-### Vercel (recommended)
-1. Push this repo to GitHub
-2. Go to [vercel.com](https://vercel.com) → Import project
-3. Select the repo → Deploy (no build config needed)
-
-### GitHub Pages
-1. Go to **Settings → Pages**
-2. Source: `main` branch, `/ (root)`
-3. Save — your site goes live at `https://<username>.github.io/<repo>`
+### 3. The Admin Dashboard (`/admin`)
+A secure operations hub.
+* **Obfuscated Gateway:** Access restricted by a base64-encoded passkey logic checking.
+* **Live Feed:** Pulls realtime orders from the Supabase backend.
+* **Action Center:** Single-click "Fill Form" populates custom fields to trigger official confirmation emails via EmailJS or execute pre-filled WhatsApp `wa.me` templates for edge-cases.
 
 ---
 
-## 🛠️ Local Development
+## ⚙️ Integrations & Config
 
-Just open `index.html` in any browser — no build step required.
+Before deploying, ensure the `CONFIG` object in `pre-order/main.js` and `ADMIN` object in `admin/admin.js` are populated with your live API keys:
 
-```bash
-# Or serve with a simple local server:
-npx serve .
-```
+- **EmailJS:** Public Key, Service ID, Template IDs
+- **Supabase:** Database URL, Anon Key
+- **UPI:** Merchant VPA and Name
+
+*(Note: The codebase has been fully stripped of development comments to reduce bundle size and prevent leakage of business logic logic structure.)*
 
 ---
 
-*Fresh · Handcrafted · Made with Love — SNACITO @ College Food Court*
+*Fresh · Handcrafted · Made with Love — SNACITO @ Aarohan Stall Area*

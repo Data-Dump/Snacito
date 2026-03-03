@@ -1,23 +1,8 @@
-/* ═══════════════════════════════════════════════════════════════
-   SNACITO — Pre-Order Wizard JS (UPI Edition)
-   ═══════════════════════════════════════════════════════════════
 
-   CONFIG — fill before going live:
-   ─────────────────────────────────────────────
-   UPI_ID          : Your UPI ID (e.g. yourname@upi / 9876543210@paytm)
-   UPI_NAME        : Payee name shown in UPI apps (e.g. SNACITO)
-   YOUR_WA_NUMBER  : Your WhatsApp (91XXXXXXXXXX)
-   EMAILJS_PUBLIC  : emailjs.com → Account → Public Key
-   EMAILJS_SERVICE : emailjs.com → Email Services → Service ID
-   EMAILJS_TEMPLATE: emailjs.com → Email Templates → Template ID
-   FAST2SMS_KEY    : fast2sms.com DEV API Key (leave blank to skip SMS)
-   BUSINESS_EMAIL  : Email that receives every order copy
-
-   ═══════════════════════════════════════════════════════════════ */
 
 const CONFIG = {
     UPI_ID: '9644679988@kotak811',
-    UPI_NAME: 'SNACITO',                 // ← appears in UPI app
+    UPI_NAME: 'SNACITO',
     YOUR_WA_NUMBER: '919644679988',
     EMAILJS_PUBLIC: 'gpa_WIcSR9HBprfFA',
     EMAILJS_SERVICE: 'service_3zd91hn',
@@ -27,28 +12,39 @@ const CONFIG = {
     SUPABASE_KEY: 'sb_publishable_Wy7qNiMG3d_GXmes2-htUw_TKkFi611'
 };
 
-/* ── Init EmailJS ───────────────────────────────────────────── */
+
 try { emailjs.init({ publicKey: CONFIG.EMAILJS_PUBLIC }); } catch (e) { }
 
-/* ── Order State ────────────────────────────────────────────── */
+
 const state = {
     items: [], addons: [], byobFlavour: '',
     total: 0, advance: 0, balance: 0,
     customer: {}, orderId: '',
 };
 
-/* ═══════════════════════════════════════════════════════════════
-   STEP 1 — Item Selection
-   ═══════════════════════════════════════════════════════════════ */
+
 
 document.querySelectorAll('.item-row .qty-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-        const row = btn.closest('.item-row');
-        const valEl = btn.parentElement.querySelector('.qty-val');
+        const wrap = btn.closest('.qty-wrap');
+        const valEl = wrap.querySelector('.qty-val');
         let v = parseInt(valEl.textContent) || 0;
         v = btn.classList.contains('plus') ? Math.min(99, v + 1) : Math.max(0, v - 1);
         valEl.textContent = v;
-        row.classList.toggle('is-added', v > 0);
+        const row = wrap.closest('.item-row');
+        if (row) {
+            row.classList.toggle('is-added', v > 0);
+            if (row.dataset.name === "BYOB Bag") {
+                updateBYOBBlocks(v);
+            } else if (row.dataset.name && row.dataset.name.startsWith('Choco Puffs')) {
+
+                let totalChocoPacks = 0;
+                document.querySelectorAll('.choco-base-qty .qty-val').forEach(el => {
+                    totalChocoPacks += (parseInt(el.textContent) || 0);
+                });
+                updateChocoBlocks(totalChocoPacks);
+            }
+        }
         recalcOrder();
     });
 });
@@ -65,13 +61,120 @@ document.querySelectorAll('.choco-qty-row .qty-btn').forEach(btn => {
 });
 
 document.querySelectorAll('[data-addon]').forEach(cb => cb.addEventListener('change', recalcOrder));
-document.querySelectorAll('[name="byob-flavour"]').forEach(r => r.addEventListener('change', () => {
-    state.byobFlavour = r.value; recalcOrder();
-}));
+
+const BYOB_FLAVOURS = ['Tomato', 'Indian Masala', 'Salted', 'Doritos', 'OG Kurkure'];
+const BYOB_ADDONS = [
+    { name: 'Mayo', price: 10 },
+    { name: 'Tandoori Mayo', price: 15 },
+    { name: 'Hot Sauce', price: 15 }
+];
+
+const CHOCO_TYPES = ['Milk', 'Dark', 'Mix'];
+const CHOCO_ADDONS = [
+    { name: 'Choco Filling', price: 10 },
+    { name: 'Choco Chips', price: 10 }
+];
+
+function updateChocoBlocks(qty) {
+    const container = document.getElementById('choco-packs-container');
+    if (!container) return;
+
+    const optionsWrap = document.getElementById('choco-options');
+    if (optionsWrap) optionsWrap.style.display = qty > 0 ? 'block' : 'none';
+
+    const currentQty = container.children.length;
+
+    if (qty > currentQty) {
+        for (let i = currentQty + 1; i <= qty; i++) {
+            const block = document.createElement('div');
+            block.className = 'choco-pack-block';
+            block.dataset.packIndex = i;
+
+            block.style.cssText = 'background: rgba(240, 180, 41, 0.05); border: 1.5px dashed rgba(184, 134, 11, 0.3); border-radius: 12px; padding: 14px; margin-top: 10px;';
+
+            let html = `<div style="font-size: 13px; font-weight: 700; color: var(--brown); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">Pack ${i}</div>`;
+
+            html += `<div class="flavour-section" style="margin-bottom: 12px;">`;
+            html += `<div class="flavour-label" style="margin-bottom: 8px; color: var(--warm-gray);">1. Chocolate Base</div>`;
+            html += `<div class="flavour-chips" style="display:flex; flex-wrap:wrap; gap:6px;">`;
+            CHOCO_TYPES.forEach((f, idx) => {
+                const checked = (idx === 0) ? 'checked' : '';
+                html += `<label class="flavour-chip"><input type="radio" name="pack-${i}-type" value="${f}" onchange="recalcOrder()" ${checked}><span style="color:var(--dark); border-color:var(--border);">${f}</span></label>`;
+            });
+            html += `</div></div>`;
+
+
+            html += `<div class="addons-box" style="background:transparent; border:none; padding:0; margin-top:0;">`;
+            html += `<div class="addons-label" style="margin-bottom: 8px; color: var(--warm-gray);">2. Add-Ons (Optional)</div>`;
+            html += `<div class="addon-chips" style="display:flex; flex-wrap:wrap; gap:6px;">`;
+            CHOCO_ADDONS.forEach(a => {
+                html += `<label class="addon-chip"><input type="checkbox" data-pack-param="${i}" data-name="${a.name}" data-price="${a.price}" onchange="recalcOrder()"><span style="color:var(--dark); border-color:var(--border);">${a.name} <em>+₹${a.price}</em></span></label>`;
+            });
+            html += `</div></div>`;
+
+            block.innerHTML = html;
+            container.appendChild(block);
+        }
+    } else if (qty < currentQty) {
+        for (let i = currentQty; i > qty; i--) {
+            if (container.lastElementChild) {
+                container.removeChild(container.lastElementChild);
+            }
+        }
+    }
+}
+
+function updateBYOBBlocks(qty) {
+    const container = document.getElementById('byob-bags-container');
+    if (!container) return;
+
+    const optionsWrap = document.getElementById('byob-options');
+    if (optionsWrap) optionsWrap.style.display = qty > 0 ? 'block' : 'none';
+
+    const currentQty = container.children.length;
+
+    if (qty > currentQty) {
+        for (let i = currentQty + 1; i <= qty; i++) {
+            const block = document.createElement('div');
+            block.className = 'byob-bag-block';
+            block.dataset.bagIndex = i;
+            block.style.cssText = 'background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 14px; margin-top: 10px;';
+
+            let html = `<div style="font-size: 13px; font-weight: 700; color: var(--gold-light); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">Bag ${i}</div>`;
+
+            html += `<div class="flavour-section" style="margin-bottom: 12px;">`;
+            html += `<div class="flavour-label" style="margin-bottom: 8px;">1. Select Flavour</div>`;
+            html += `<div class="flavour-chips" style="display:flex; flex-wrap:wrap; gap:6px;">`;
+            BYOB_FLAVOURS.forEach((f, idx) => {
+                const checked = (idx === 0) ? 'checked' : '';
+                html += `<label class="flavour-chip"><input type="radio" name="bag-${i}-flavour" value="${f}" onchange="recalcOrder()" ${checked}><span>${f}</span></label>`;
+            });
+            html += `</div></div>`;
+
+            html += `<div class="addons-box dark" style="background:transparent; border:none; padding:0; margin-top:0;">`;
+            html += `<div class="addons-label" style="margin-bottom: 8px;">2. Add-Ons (Optional)</div>`;
+            html += `<div class="addon-chips" style="display:flex; flex-wrap:wrap; gap:6px;">`;
+            BYOB_ADDONS.forEach(a => {
+                html += `<label class="addon-chip dark"><input type="checkbox" data-bag-param="${i}" data-name="${a.name}" data-price="${a.price}" onchange="recalcOrder()"><span>${a.name} <em>+₹${a.price}</em></span></label>`;
+            });
+            html += `</div></div>`;
+
+            block.innerHTML = html;
+            container.appendChild(block);
+        }
+    } else if (qty < currentQty) {
+        for (let i = currentQty; i > qty; i--) {
+            if (container.lastElementChild) {
+                container.removeChild(container.lastElementChild);
+            }
+        }
+    }
+}
 
 function recalcOrder() {
     state.items = [];
     state.addons = [];
+
     let total = 0;
 
     document.querySelectorAll('.item-row[data-price]').forEach(row => {
@@ -92,11 +195,99 @@ function recalcOrder() {
         }
     });
 
-    document.querySelectorAll('[data-addon]:checked').forEach(cb => {
+
+    document.querySelectorAll('[data-addon]:not([data-bag-param]):checked').forEach(cb => {
         const addon = { name: cb.dataset.addon, price: parseInt(cb.dataset.price) };
         state.addons.push(addon);
         total += addon.price;
     });
+
+
+    const dynamicBags = document.querySelectorAll('.byob-bag-block');
+    let byobSummaryList = [];
+
+    dynamicBags.forEach(block => {
+        const bagIdx = block.dataset.bagIndex;
+        const fRadio = block.querySelector(`input[name="bag-${bagIdx}-flavour"]:checked`);
+        const flav = fRadio ? fRadio.value : '';
+
+        let bagAddons = [];
+        block.querySelectorAll(`input[data-bag-param="${bagIdx}"]:checked`).forEach(cb => {
+            const aName = cb.dataset.name;
+            const aPrice = parseInt(cb.dataset.price);
+            bagAddons.push(aName);
+            state.addons.push({ name: `${aName} (Bag ${bagIdx})`, price: aPrice });
+            total += aPrice;
+        });
+
+        if (flav) {
+            const addonStr = bagAddons.length ? ` w/ ${bagAddons.join(', ')}` : '';
+            byobSummaryList.push(`Bag ${bagIdx}: ${flav}${addonStr}`);
+        }
+    });
+
+    state.byobFlavour = byobSummaryList.length > 0 ? byobSummaryList.join(' | ') : null;
+
+
+    const dynamicPacks = document.querySelectorAll('.choco-pack-block');
+
+
+    let packSizes = [];
+    document.querySelectorAll('.choco-base-qty').forEach(wrap => {
+        const row = wrap.closest('.item-row');
+        if (!row) return;
+        const qty = parseInt(wrap.querySelector('.qty-val').textContent) || 0;
+        const sizeMatch = row.dataset.name.match(/(\d+)pc/);
+        const sizeStr = sizeMatch ? sizeMatch[1] + 'pc' : 'Base';
+
+        for (let i = 0; i < qty; i++) {
+            packSizes.push(sizeStr);
+        }
+    });
+
+
+
+
+    let chocoSummaryList = [];
+    dynamicPacks.forEach((block, idx) => {
+        const packIdx = block.dataset.packIndex;
+        const sizeStr = packSizes[idx] || 'Pack';
+        const typeRadio = block.querySelector(`input[name="pack-${packIdx}-type"]:checked`);
+        const chocoType = typeRadio ? typeRadio.value : '';
+
+
+
+
+        if (chocoType === 'Mix') {
+            let mixPremium = 0;
+            if (sizeStr === '5pc') mixPremium = 10;
+            if (sizeStr === '8pc') mixPremium = 20;
+            if (sizeStr === '12pc') mixPremium = 20;
+
+            if (mixPremium > 0) {
+                state.addons.push({ name: `${sizeStr} Mix Premium (Pack ${packIdx})`, price: mixPremium });
+                total += mixPremium;
+            }
+        }
+
+        let packAddons = [];
+        block.querySelectorAll(`input[data-pack-param="${packIdx}"]:checked`).forEach(cb => {
+            const aName = cb.dataset.name;
+            const aPrice = parseInt(cb.dataset.price);
+            packAddons.push(aName);
+            state.addons.push({ name: `${aName} (Pack ${packIdx})`, price: aPrice });
+            total += aPrice;
+        });
+
+        if (chocoType) {
+            const addonStr = packAddons.length ? ` w/ ${packAddons.join(', ')}` : '';
+            chocoSummaryList.push(`Pack ${packIdx} (${sizeStr}): ${chocoType}${addonStr}`);
+        }
+    });
+
+
+
+    state.chocoFlavour = chocoSummaryList.length > 0 ? chocoSummaryList.join(' | ') : null;
 
     state.total = total;
     state.advance = Math.ceil(total * 0.10);
@@ -124,9 +315,7 @@ function goToStep2() {
 document.getElementById('btn-to-step2').addEventListener('click', goToStep2);
 document.getElementById('btn-to-step2-bottom').addEventListener('click', goToStep2);
 
-/* ═══════════════════════════════════════════════════════════════
-   STEP 2 — Details
-   ═══════════════════════════════════════════════════════════════ */
+
 document.getElementById('btn-back-1').addEventListener('click', () => showStep(1));
 
 document.getElementById('btn-to-step3').addEventListener('click', () => {
@@ -160,9 +349,7 @@ document.getElementById('btn-to-step3').addEventListener('click', () => {
     showStep(3);
 });
 
-/* ═══════════════════════════════════════════════════════════════
-   STEP 3 — Summary builder
-   ═══════════════════════════════════════════════════════════════ */
+
 function buildSummary() {
     const card = document.getElementById('summary-card');
     let html = `<div class="summary-head"><div class="summary-head-text">Your Order — ${state.customer.name}</div></div>`;
@@ -185,6 +372,12 @@ function buildSummary() {
       <span class="summary-item-price" style="font-weight:500;color:var(--warm-gray)">${state.byobFlavour}</span>
     </div>`;
     }
+    if (state.chocoFlavour) {
+        html += `<div class="summary-item">
+      <span class="summary-item-name" style="color:var(--warm-gray)">Choco Puffs Flavour</span>
+      <span class="summary-item-price" style="font-weight:500;color:var(--warm-gray)">${state.chocoFlavour}</span>
+    </div>`;
+    }
     card.innerHTML = html;
 
     document.getElementById('s-total').textContent = '₹' + state.total;
@@ -195,21 +388,20 @@ function buildSummary() {
 
 document.getElementById('btn-back-2').addEventListener('click', () => showStep(2));
 
-/* ═══════════════════════════════════════════════════════════════
-   UPI PAYMENT MODAL
-   ═══════════════════════════════════════════════════════════════ */
+
 
 function buildOrderNote() {
     const lines = state.items.map(i => `${i.name} × ${i.qty} = ₹${i.price * i.qty}`);
     state.addons.forEach(a => lines.push(`Add-On: ${a.name} = ₹${a.price}`));
     if (state.byobFlavour) lines.push(`BYOB Flavour: ${state.byobFlavour}`);
+    if (state.chocoFlavour) lines.push(`Choco Puffs Flavour: ${state.chocoFlavour}`);
     if (state.customer.note) lines.push(`Note: ${state.customer.note}`);
     lines.push('---');
     lines.push(`Total: ₹${state.total}  |  Advance: ₹${state.advance}  |  Balance: ₹${state.balance}`);
     return lines.join('\n');
 }
 
-/* Open the UPI modal */
+
 document.getElementById('btn-pay').addEventListener('click', () => {
     try {
         if (state.advance <= 0) { alert('Please add at least one item'); return; }
@@ -224,23 +416,23 @@ function openUPIModal() {
     const orderId = 'SNK' + Date.now().toString(36).toUpperCase();
     state.orderId = orderId;
 
-    /* Build UPI deep-link */
+
     const upiLink = `upi://pay?pa=${encodeURIComponent(CONFIG.UPI_ID)}&pn=${encodeURIComponent(CONFIG.UPI_NAME)}&am=${state.advance}&cu=INR&tn=${encodeURIComponent('SNACITO-' + orderId)}`;
 
-    /* Populate text fields */
+
     document.getElementById('upi-amount').textContent = state.advance;
     document.getElementById('upi-amt-inline').textContent = state.advance;
     document.getElementById('upi-id-display').textContent = CONFIG.UPI_ID;
     document.getElementById('btn-upi-app').href = upiLink;
 
-    /* Wire screenshot button (removed from HTML) */
 
-    /* Show modal FIRST so user isn't blocked */
+
+
     const overlay = document.getElementById('upi-overlay');
     overlay.style.display = 'flex';
     document.body.style.overflow = 'hidden';
 
-    /* Generate QR via free API — no library needed */
+
     const qrImg = document.getElementById('upi-qr-img');
     qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(upiLink)}&color=3a1a05&bgcolor=ffffff&margin=10&format=png`;
 }
@@ -255,7 +447,7 @@ document.getElementById('upi-overlay').addEventListener('click', e => {
     if (e.target === e.currentTarget) closeUPIModal();
 });
 
-/* Copy UPI ID */
+
 document.getElementById('upi-copy-btn').addEventListener('click', () => {
     navigator.clipboard.writeText(CONFIG.UPI_ID).then(() => {
         const btn = document.getElementById('upi-copy-btn');
@@ -265,19 +457,19 @@ document.getElementById('upi-copy-btn').addEventListener('click', () => {
     });
 });
 
-/* ── "I've Paid" → Confirm order ────────────────────────────── */
+
 document.getElementById('btn-paid').addEventListener('click', async () => {
     const btn = document.getElementById('btn-paid');
     btn.disabled = true;
     btn.textContent = 'Confirming…';
 
-    saveOrder();   // persist to Supabase for admin panel
+    saveOrder();
     await Promise.allSettled([sendEmail(), sendOwnerEmail()]);
     closeUPIModal();
     showSuccess();
 });
 
-/* ── Save order to Supabase ──────────────────────────────────── */
+
 async function saveOrder() {
     if (!CONFIG.SUPABASE_URL) return;
 
@@ -308,7 +500,7 @@ async function saveOrder() {
     }
 }
 
-/* ── Customer confirmation email ─────────────────────────────── */
+
 async function sendEmail() {
     if (!CONFIG.EMAILJS_SERVICE) return;
     try {
@@ -317,7 +509,7 @@ async function sendEmail() {
             to_email: state.customer.email,
             order_id: state.orderId,
             order_date: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }),
-            pickup_date: 'March 7th, 2026 — College Food Court',
+            pickup_date: 'March 6th, 2026 — Aarohan Stall Area',
             order_items: buildOrderNote(),
             order_total: '\u20b9' + state.total,
             advance_paid: '\u20b9' + state.advance,
@@ -330,7 +522,7 @@ async function sendEmail() {
     }
 }
 
-/* ── Owner notification email ──────────────────────────────────── */
+
 async function sendOwnerEmail() {
     if (!CONFIG.EMAILJS_SERVICE) return;
     try {
@@ -339,12 +531,13 @@ async function sendOwnerEmail() {
             to_email: CONFIG.BUSINESS_EMAIL,
             order_id: state.orderId,
             order_date: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }),
-            pickup_date: 'March 7th, 2026 — College Food Court',
+            pickup_date: 'March 6th, 2026 — Aarohan Stall Area',
             order_items: buildOrderNote(),
             order_total: '\u20b9' + state.total,
             advance_paid: '\u20b9' + state.advance,
             balance_due: '\u20b9' + state.balance,
             customer_phone: '+91 ' + state.customer.phone,
+            choco_flavour: state.chocoFlavour || 'N/A',
         });
         console.log('[EmailJS] Owner notification OK:', r.status, r.text);
     } catch (e) {
@@ -352,7 +545,7 @@ async function sendOwnerEmail() {
     }
 }
 
-/* ── WhatsApp notification ──────────────────────────────────── */
+
 function openWhatsApp() {
     const msg = [
         `🛒 *SNACITO Pre-Order — Advance Paid*`,
@@ -364,22 +557,20 @@ function openWhatsApp() {
         `💳 Advance paid: ₹${state.advance} via UPI`,
         ``,
         buildOrderNote(),
-        ``,
-        `_(March 7th · College Food Court)_`
+        `*Pick-up Details:*`,
+        `_(March 6th · Aarohan Stall Area)_`,
     ].join('\n');
     window.open(`https://wa.me/${CONFIG.YOUR_WA_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
 }
 
-/* ── Success screen ─────────────────────────────────────────── */
+
 function showSuccess() {
     document.getElementById('succ-name').textContent = state.customer.name.split(' ')[0];
     document.getElementById('succ-order-id').textContent = state.orderId;
     showStep('success');
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   Step Navigation
-   ═══════════════════════════════════════════════════════════════ */
+
 function showStep(n) {
     document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
     document.getElementById('step-' + n).classList.add('active');
@@ -396,5 +587,5 @@ function showStep(n) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-/* ── Boot ───────────────────────────────────────────────────── */
+
 recalcOrder();
