@@ -34,7 +34,7 @@ document.querySelectorAll('.item-row .qty-btn').forEach(btn => {
         const row = wrap.closest('.item-row');
         if (row) {
             row.classList.toggle('is-added', v > 0);
-            if (row.dataset.name === "BYOB Bag") {
+            if (row.dataset.name === "Chips-Chaat Bag") {
                 updateBYOBBlocks(v);
             } else if (row.dataset.name && row.dataset.name.startsWith('Choco Puffs')) {
 
@@ -368,7 +368,7 @@ function buildSummary() {
     });
     if (state.byobFlavour) {
         html += `<div class="summary-item">
-      <span class="summary-item-name" style="color:var(--warm-gray)">BYOB Flavour</span>
+      <span class="summary-item-name" style="color:var(--warm-gray)">Chips Flavour</span>
       <span class="summary-item-price" style="font-weight:500;color:var(--warm-gray)">${state.byobFlavour}</span>
     </div>`;
     }
@@ -393,7 +393,7 @@ document.getElementById('btn-back-2').addEventListener('click', () => showStep(2
 function buildOrderNote() {
     const lines = state.items.map(i => `${i.name} × ${i.qty} = ₹${i.price * i.qty}`);
     state.addons.forEach(a => lines.push(`Add-On: ${a.name} = ₹${a.price}`));
-    if (state.byobFlavour) lines.push(`BYOB Flavour: ${state.byobFlavour}`);
+    if (state.byobFlavour) lines.push(`Chips-Chaat Flavour: ${state.byobFlavour}`);
     if (state.chocoFlavour) lines.push(`Choco Puffs Flavour: ${state.chocoFlavour}`);
     if (state.customer.note) lines.push(`Note: ${state.customer.note}`);
     lines.push('---');

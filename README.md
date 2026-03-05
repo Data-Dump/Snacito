@@ -32,7 +32,7 @@ An elegant, fine-dining inspired digital menu. Features smooth scroll-reveals, s
 
 ### 2. The Online-Order Wizard (`/online-order`)
 A highly dynamic, mobile-first ordering experience:
-* **Dynamic Form Generation:** "Mini Choco Puffs" and "BYOB Chips" dynamically generate individual sub-configuration blocks (e.g., "Pack 1", "Pack 2") based on quantity selected, allowing per-item customization (Milk/Dark/Mix coatings + Addons).
+* **Dynamic Form Generation:** "Mini Choco Puffs" and "Chips-Chaat" dynamically generate individual sub-configuration blocks (e.g., "Pack 1", "Pack 2") based on quantity selected, allowing per-item customization (Milk/Dark/Mix coatings + Addons).
 * **Live Cart Calculation:** Real-time calculation of totals, mix-premiums, addon costs, and the 50% UPI advance requirement.
 * **Integrations:**
     * **EmailJS:** Sends professional, HTML-formatted email receipts to customers and blind-copies to the owner.
