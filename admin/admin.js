@@ -64,6 +64,8 @@ async function loadOrders() {
                 pending: '<span class="badge badge-pending">Pending</span>',
                 confirmed: '<span class="badge badge-confirmed">Confirmed</span>',
                 rejected: '<span class="badge badge-rejected">Not Received</span>',
+                delivered: '<span class="badge badge-delivered">Delivered</span>',
+                not_delivered: '<span class="badge badge-notdelivered">Not Delivered</span>',
             };
             return `
             <div class="order-row" id="order-row-${i}">
@@ -82,6 +84,9 @@ async function loadOrders() {
                 <div class="order-actions">
                     <button class="order-fill-btn" onclick="fillForm(${i})">Fill Form →</button>
                     <button class="order-fill-btn" style="border-color: rgba(34, 197, 94, 0.4); color: var(--green);" onclick="openWA('${o.phone}', '${o.name}', '${o.order_id}', ${o.amount})">WhatsApp</button>
+                    <button class="order-fill-btn" style="border-color: rgba(56, 189, 248, 0.4); color: #38bdf8;" onclick="markOrderStatus('${o.order_id}', 'delivered')">Delivered</button>
+                    <button class="order-fill-btn" style="border-color: rgba(244, 63, 94, 0.4); color: #f43f5e;" onclick="markOrderStatus('${o.order_id}', 'not_delivered')">Not Delivered</button>
+                    <button class="order-fill-btn" style="border-color: rgba(107, 114, 128, 0.4); color: #9ca3af;" onclick="deleteOrder('${o.order_id}')">Delete</button>
                 </div>
             </div>`;
         }).join('');
@@ -265,6 +270,24 @@ async function markOrderStatus(orderId, status) {
         loadOrders();
     } catch (e) {
         console.error('Failed to update status on Supabase:', e);
+    }
+}
+
+async function deleteOrder(orderId) {
+    if (!confirm('Are you sure you want to delete this order?')) return;
+    try {
+        await fetch(`${ADMIN.SUPABASE_URL}/rest/v1/orders?order_id=eq.${orderId}`, {
+            method: 'DELETE',
+            headers: {
+                'apikey': ADMIN.SUPABASE_KEY,
+                'Authorization': `Bearer ${ADMIN.SUPABASE_KEY}`
+            }
+        });
+        showToast('Order deleted', 'success');
+        loadOrders();
+    } catch (e) {
+        console.error('Failed to delete order:', e);
+        showToast('Failed to delete order', 'error');
     }
 }
 
