@@ -589,3 +589,26 @@ function showStep(n) {
 
 
 recalcOrder();
+
+async function trackVisit() {
+    if (sessionStorage.getItem('snacito_preorder_visited')) return;
+
+    if (!CONFIG.SUPABASE_URL) return;
+    try {
+        await fetch(`${CONFIG.SUPABASE_URL}/rest/v1/visits`, {
+            method: 'POST',
+            headers: {
+                'apikey': CONFIG.SUPABASE_KEY,
+                'Authorization': `Bearer ${CONFIG.SUPABASE_KEY}`,
+                'Content-Type': 'application/json',
+                'Prefer': 'return=minimal'
+            },
+            body: JSON.stringify({ page_name: 'pre-order' })
+        });
+        sessionStorage.setItem('snacito_preorder_visited', 'true');
+    } catch (e) {
+        console.error('Failed to track visit:', e);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', trackVisit);

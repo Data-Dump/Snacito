@@ -12,6 +12,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@300;400;500;600;700&display=swap"
         rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
     <style>
@@ -508,6 +509,25 @@
 
         <div class="admin-main">
 
+            <div class="section-title" style="margin-bottom:16px;">Visit Analytics</div>
+            <div class="form-grid" style="margin-bottom: 32px;">
+                <div class="verify-card" style="margin-bottom: 0; padding: 20px; text-align: center;">
+                    <div
+                        style="font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--sub); margin-bottom: 8px;">
+                        Main Website</div>
+                    <div id="count-website"
+                        style="font-size: 32px; font-weight: 900; color: var(--gold); font-family: 'Playfair Display', serif;">
+                        --</div>
+                </div>
+                <div class="verify-card" style="margin-bottom: 0; padding: 20px; text-align: center;">
+                    <div
+                        style="font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--sub); margin-bottom: 8px;">
+                        Pre-Order Link</div>
+                    <div id="count-preorder"
+                        style="font-size: 32px; font-weight: 900; color: var(--green); font-family: 'Playfair Display', serif;">
+                        --</div>
+                </div>
+            </div>
 
             <div class="section-title" style="margin-bottom:16px;">Recorded Orders</div>
             <div class="orders-list" id="orders-list">

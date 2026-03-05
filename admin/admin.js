@@ -9,6 +9,7 @@ const ADMIN = {
     SUPABASE_KEY: 'sb_publishable_Wy7qNiMG3d_GXmes2-htUw_TKkFi611'
 };
 
+const supabaseClient = supabase.createClient(ADMIN.SUPABASE_URL, ADMIN.SUPABASE_KEY);
 
 try { emailjs.init({ publicKey: ADMIN.EMAILJS_PUBLIC }); } catch (e) { }
 
@@ -22,6 +23,8 @@ function tryLogin() {
         gate.style.display = 'none';
         panel.style.display = 'block';
         loadOrders();
+        loadVisits();
+        setupRealtimeSubscriptions();
     } else {
         document.getElementById('pw-input').classList.add('error');
         document.getElementById('gate-error').style.display = 'block';
@@ -87,6 +90,53 @@ async function loadOrders() {
     }
 }
 
+async function loadVisits() {
+    try {
+        const websiteRes = await fetch(`${ADMIN.SUPABASE_URL}/rest/v1/visits?page_name=eq.website&select=id`, {
+            headers: { 'apikey': ADMIN.SUPABASE_KEY, 'Authorization': `Bearer ${ADMIN.SUPABASE_KEY}`, 'Prefer': 'count=exact' }
+        });
+        const websiteCount = websiteRes.headers.get('content-range') ? websiteRes.headers.get('content-range').split('/')[1] : 0;
+        document.getElementById('count-website').textContent = websiteCount;
+
+        const preorderRes = await fetch(`${ADMIN.SUPABASE_URL}/rest/v1/visits?page_name=eq.pre-order&select=id`, {
+            headers: { 'apikey': ADMIN.SUPABASE_KEY, 'Authorization': `Bearer ${ADMIN.SUPABASE_KEY}`, 'Prefer': 'count=exact' }
+        });
+        const preorderCount = preorderRes.headers.get('content-range') ? preorderRes.headers.get('content-range').split('/')[1] : 0;
+        document.getElementById('count-preorder').textContent = preorderCount;
+    } catch (e) {
+        console.error('Failed to load visits:', e);
+        document.getElementById('count-website').textContent = '-';
+        document.getElementById('count-preorder').textContent = '-';
+    }
+}
+
+let realtimeSetupDone = false;
+function setupRealtimeSubscriptions() {
+    if (realtimeSetupDone) return;
+    realtimeSetupDone = true;
+
+    supabaseClient.channel('public:visits')
+        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'visits' }, payload => {
+            const page_name = payload.new.page_name;
+            if (page_name === 'website') {
+                const el = document.getElementById('count-website');
+                const curr = parseInt(el.textContent) || 0;
+                el.textContent = curr + 1;
+            } else if (page_name === 'pre-order') {
+                const el = document.getElementById('count-preorder');
+                const curr = parseInt(el.textContent) || 0;
+                el.textContent = curr + 1;
+            }
+        })
+        .subscribe();
+
+    supabaseClient.channel('public:orders')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'orders' }, payload => {
+            console.log('Realtime order update:', payload);
+            loadOrders();
+        })
+        .subscribe();
+}
 
 function fillForm(idx) {
     const orders = window._adminOrdersCache || [];

@@ -1,4 +1,8 @@
 ﻿
+const CONFIG = {
+  SUPABASE_URL: 'https://iezszlgxyqizdqazrner.supabase.co',
+  SUPABASE_KEY: 'sb_publishable_Wy7qNiMG3d_GXmes2-htUw_TKkFi611'
+};
 
 const SECTIONS = ['waffles', 'puffs', 'byob'];
 
@@ -34,5 +38,28 @@ function initScrollReveal() {
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 }
 
-document.addEventListener('DOMContentLoaded', initScrollReveal);
+document.addEventListener('DOMContentLoaded', () => {
+  initScrollReveal();
+  trackVisit();
+});
 
+async function trackVisit() {
+  if (sessionStorage.getItem('snacito_website_visited')) return;
+
+  if (!CONFIG.SUPABASE_URL) return;
+  try {
+    await fetch(`${CONFIG.SUPABASE_URL}/rest/v1/visits`, {
+      method: 'POST',
+      headers: {
+        'apikey': CONFIG.SUPABASE_KEY,
+        'Authorization': `Bearer ${CONFIG.SUPABASE_KEY}`,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({ page_name: 'website' })
+    });
+    sessionStorage.setItem('snacito_website_visited', 'true');
+  } catch (e) {
+    console.error('Failed to track visit:', e);
+  }
+}
