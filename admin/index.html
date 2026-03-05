@@ -502,7 +502,7 @@
         <div class="topbar">
             <div>
                 <div class="topbar-brand">SNA<span>CITO</span></div>
-                <div class="topbar-tag">Admin · Pre-Order Verification</div>
+                <div class="topbar-tag">Admin · Online-Order Verification</div>
             </div>
             <button class="topbar-logout" id="btn-logout">Sign Out</button>
         </div>
@@ -522,8 +522,8 @@
                 <div class="verify-card" style="margin-bottom: 0; padding: 20px; text-align: center;">
                     <div
                         style="font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--sub); margin-bottom: 8px;">
-                        Pre-Order Link</div>
-                    <div id="count-preorder"
+                        Online-Order Link</div>
+                    <div id="count-onlineorder"
                         style="font-size: 32px; font-weight: 900; color: var(--green); font-family: 'Playfair Display', serif;">
                         --</div>
                 </div>
@@ -567,11 +567,12 @@
                     </div>
                 </div>
 
-                <div class="action-row" style="grid-template-columns: 1fr;">
+                <div class="action-row">
                     <button class="btn-confirm" id="btn-confirm">✅ &nbsp;Payment Confirmed</button>
+                    <button class="btn-notreceived" id="btn-reject" type="button">❌ &nbsp;Not Received</button>
                 </div>
                 <div style="margin-top:14px; text-align:center; font-size:12px; color:var(--sub);">
-                    For unverified payments, contact the customer directly.
+                    For unverified payments, mark as "Not Received" or contact the customer directly.
                 </div>
             </div>
 

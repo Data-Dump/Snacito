@@ -702,7 +702,7 @@ footer::before {
 }
 
 
-.btn-floating-preorder {
+.btn-floating-onlineorder {
   position: fixed;
   bottom: 24px;
   right: 24px;
@@ -725,13 +725,13 @@ footer::before {
   transform: translateY(40px) scale(0.9);
 }
 
-.btn-floating-preorder:hover {
+.btn-floating-onlineorder:hover {
   transform: translateY(-4px) scale(1.02) !important;
   box-shadow: 0 16px 40px rgba(212, 160, 23, 0.3), 0 0 0 1px rgba(212, 160, 23, 0.6);
   color: white;
 }
 
-.btn-preorder-icon {
+.btn-onlineorder-icon {
   font-size: 18px;
   animation: bounce-x 2s infinite ease-in-out;
 }
@@ -756,7 +756,7 @@ footer::before {
 }
 
 @media (max-width: 600px) {
-  .btn-floating-preorder {
+  .btn-floating-onlineorder {
     bottom: 20px;
     right: 50%;
     transform: translateX(50%) translateY(40px) scale(0.9);
@@ -773,7 +773,7 @@ footer::before {
     }
   }
 
-  .btn-floating-preorder:hover {
+  .btn-floating-onlineorder:hover {
     transform: translateX(50%) translateY(-2px) scale(1.02) !important;
   }
 }

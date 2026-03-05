@@ -290,7 +290,7 @@ function recalcOrder() {
     state.chocoFlavour = chocoSummaryList.length > 0 ? chocoSummaryList.join(' | ') : null;
 
     state.total = total;
-    state.advance = Math.ceil(total * 0.10);
+    state.advance = Math.ceil(total * 0.50);
     state.balance = total - state.advance;
 
     const totalItems = state.items.reduce((s, i) => s + i.qty, 0);
@@ -546,22 +546,7 @@ async function sendOwnerEmail() {
 }
 
 
-function openWhatsApp() {
-    const msg = [
-        `🛒 *SNACITO Pre-Order — Advance Paid*`,
-        ``,
-        `👤 ${state.customer.name}`,
-        `📱 +91 ${state.customer.phone}`,
-        `✉️ ${state.customer.email}`,
-        `🆔 Order ID: ${state.orderId}`,
-        `💳 Advance paid: ₹${state.advance} via UPI`,
-        ``,
-        buildOrderNote(),
-        `*Pick-up Details:*`,
-        `_(March 6th · Aarohan Stall Area)_`,
-    ].join('\n');
-    window.open(`https://wa.me/${CONFIG.YOUR_WA_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
-}
+
 
 
 function showSuccess() {
@@ -591,7 +576,7 @@ function showStep(n) {
 recalcOrder();
 
 async function trackVisit() {
-    if (sessionStorage.getItem('snacito_preorder_visited')) return;
+    if (sessionStorage.getItem('snacito_onlineorder_visited')) return;
 
     if (!CONFIG.SUPABASE_URL) return;
     try {
@@ -603,9 +588,9 @@ async function trackVisit() {
                 'Content-Type': 'application/json',
                 'Prefer': 'return=minimal'
             },
-            body: JSON.stringify({ page_name: 'pre-order' })
+            body: JSON.stringify({ page_name: 'online-order' })
         });
-        sessionStorage.setItem('snacito_preorder_visited', 'true');
+        sessionStorage.setItem('snacito_onlineorder_visited', 'true');
     } catch (e) {
         console.error('Failed to track visit:', e);
     }

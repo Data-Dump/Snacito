@@ -81,6 +81,7 @@ async function loadOrders() {
                 <div class="order-meta">${new Date(o.created_at).toLocaleString('en-IN')}</div>
                 <div class="order-actions">
                     <button class="order-fill-btn" onclick="fillForm(${i})">Fill Form →</button>
+                    <button class="order-fill-btn" style="border-color: rgba(34, 197, 94, 0.4); color: var(--green);" onclick="openWA('${o.phone}', '${o.name}', '${o.order_id}', ${o.amount})">WhatsApp</button>
                 </div>
             </div>`;
         }).join('');
@@ -98,15 +99,41 @@ async function loadVisits() {
         const websiteCount = websiteRes.headers.get('content-range') ? websiteRes.headers.get('content-range').split('/')[1] : 0;
         document.getElementById('count-website').textContent = websiteCount;
 
-        const preorderRes = await fetch(`${ADMIN.SUPABASE_URL}/rest/v1/visits?page_name=eq.pre-order&select=id`, {
+        const onlineOrderRes = await fetch(`${ADMIN.SUPABASE_URL}/rest/v1/visits?page_name=eq.online-order&select=id`, {
             headers: { 'apikey': ADMIN.SUPABASE_KEY, 'Authorization': `Bearer ${ADMIN.SUPABASE_KEY}`, 'Prefer': 'count=exact' }
         });
-        const preorderCount = preorderRes.headers.get('content-range') ? preorderRes.headers.get('content-range').split('/')[1] : 0;
-        document.getElementById('count-preorder').textContent = preorderCount;
+        const onlineOrderCount = onlineOrderRes.headers.get('content-range') ? onlineOrderRes.headers.get('content-range').split('/')[1] : 0;
+        document.getElementById('count-onlineorder').textContent = onlineOrderCount;
     } catch (e) {
         console.error('Failed to load visits:', e);
         document.getElementById('count-website').textContent = '-';
-        document.getElementById('count-preorder').textContent = '-';
+        document.getElementById('count-onlineorder').textContent = '-';
+    }
+}
+
+function playNotificationSound() {
+    try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) return;
+        const ctx = new AudioContext();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.type = 'sine';
+
+        osc.frequency.setValueAtTime(880, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(440, ctx.currentTime + 0.1);
+
+        gain.gain.setValueAtTime(0.5, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 3.0);
+
+        osc.start();
+        osc.stop(ctx.currentTime + 3.0);
+    } catch (e) {
+        console.error('Audio play failed', e);
     }
 }
 
@@ -115,24 +142,25 @@ function setupRealtimeSubscriptions() {
     if (realtimeSetupDone) return;
     realtimeSetupDone = true;
 
-    supabaseClient.channel('public:visits')
+    const realtimeChannel = supabaseClient.channel('admin-live-updates')
         .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'visits' }, payload => {
             const page_name = payload.new.page_name;
             if (page_name === 'website') {
                 const el = document.getElementById('count-website');
                 const curr = parseInt(el.textContent) || 0;
                 el.textContent = curr + 1;
-            } else if (page_name === 'pre-order') {
-                const el = document.getElementById('count-preorder');
+            } else if (page_name === 'online-order') {
+                const el = document.getElementById('count-onlineorder');
                 const curr = parseInt(el.textContent) || 0;
                 el.textContent = curr + 1;
             }
         })
-        .subscribe();
-
-    supabaseClient.channel('public:orders')
         .on('postgres_changes', { event: '*', schema: 'public', table: 'orders' }, payload => {
             console.log('Realtime order update:', payload);
+            if (payload.eventType === 'INSERT') {
+                playNotificationSound();
+                showToast('New Order Received!', 'success');
+            }
             loadOrders();
         })
         .subscribe();
@@ -148,6 +176,11 @@ function fillForm(idx) {
     document.getElementById('v-amount').value = o.amount;
     document.getElementById('v-items').value = o.items || '';
     document.querySelector('.verify-card').scrollIntoView({ behavior: 'smooth' });
+}
+
+function openWA(phone, name, orderId, amount) {
+    const msg = `Hi ${name},\nThis is regarding your SNACITO order (${orderId}). We noticed your advance payment of ₹${amount} is pending. Please let us know if you need any help with the payment link!`;
+    window.open(`https://wa.me/91${phone}?text=${encodeURIComponent(msg)}`, '_blank');
 }
 
 
@@ -194,11 +227,21 @@ document.getElementById('btn-confirm').addEventListener('click', async () => {
     setLoading(false);
 });
 
+document.getElementById('btn-reject').addEventListener('click', async () => {
+    const data = getFormData();
+    if (!data) { showToast('Fill in all required fields', 'error'); return; }
 
-
+    setLoading(true);
+    markOrderStatus(data.orderId, 'rejected');
+    showToast('❌ Marked as Not Received', 'error');
+    clearForm();
+    setLoading(false);
+});
 
 function setLoading(on) {
     document.getElementById('btn-confirm').disabled = on;
+    const btnReject = document.getElementById('btn-reject');
+    if (btnReject) btnReject.disabled = on;
 }
 
 function clearForm() {
