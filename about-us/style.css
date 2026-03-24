@@ -1,3 +1,15 @@
+:root {
+    --gold-bright: var(--brand-gold-light);
+    --gold: var(--brand-gold);
+    --brown-deep: var(--brand-brown-dark);
+    --brown: var(--brand-brown);
+    --warm-gray: var(--text-muted);
+    --dark: var(--text-main);
+    --border: var(--border-light);
+    --card-bg: var(--brand-white);
+    --gold-light: var(--brand-gold-light);
+}
+
 header {
     position: absolute;
     top: 0;
@@ -190,59 +202,78 @@ header {
 
 .cta-section {
     text-align: center;
-    margin-bottom: 60px;
-    padding: 60px;
-    background: var(--card-bg);
-    border-radius: 20px;
-    border: 1px dashed var(--border);
-    box-shadow: 0 12px 32px rgba(139, 90, 43, 0.05);
+    margin-bottom: 80px;
+    padding: 80px 40px;
+    background: linear-gradient(135deg, var(--brand-brown-dark) 0%, var(--brand-brown) 100%);
+    border-radius: 32px;
+    border: 1px solid rgba(212, 160, 23, 0.2);
+    box-shadow: 0 20px 60px rgba(66, 36, 21, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.cta-section::before {
+    content: '';
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(212, 160, 23, 0.15) 0%, transparent 70%);
+    border-radius: 50%;
 }
 
 .cta-section p {
     font-family: 'Playfair Display', serif;
-    color: var(--dark);
-    font-size: 32px;
+    color: var(--brand-gold-light);
+    font-size: 42px;
     font-weight: 700;
-    margin-bottom: 32px;
+    margin-bottom: 40px;
+    text-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
 .btn-primary {
     display: inline-block;
-    background: linear-gradient(135deg, var(--brown), var(--brown-deep));
-    color: white;
+    background: var(--brand-gold);
+    color: var(--brand-brown-dark);
     text-decoration: none;
-    padding: 16px 36px;
+    padding: 18px 48px;
     border-radius: 50px;
-    font-weight: 600;
+    font-weight: 800;
+    font-size: 16px;
     letter-spacing: 0.5px;
-    box-shadow: 0 8px 24px rgba(139, 90, 43, 0.2);
-    margin-right: 16px;
-    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 10px 30px rgba(212, 160, 23, 0.4);
+    margin: 8px;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 32px rgba(139, 90, 43, 0.3);
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 15px 40px rgba(212, 160, 23, 0.6);
+    background: var(--brand-gold-light);
 }
 
 .btn-secondary {
     display: inline-block;
-    background: white;
-    color: var(--brown-deep);
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
     text-decoration: none;
-    padding: 16px 36px;
+    padding: 18px 48px;
     border-radius: 50px;
-    font-weight: 600;
+    font-weight: 700;
+    font-size: 16px;
     letter-spacing: 0.5px;
-    border: 1.5px solid var(--border);
-    box-shadow: 0 4px 12px rgba(139, 90, 43, 0.05);
-    transition: all 0.2s;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    margin: 8px;
+    transition: all 0.3s ease;
 }
 
 .btn-secondary:hover {
-    border-color: var(--brown);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(139, 90, 43, 0.1);
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: translateY(-4px);
 }
 
 @media (max-width: 600px) {

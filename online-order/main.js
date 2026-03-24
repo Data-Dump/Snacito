@@ -17,7 +17,8 @@ try { emailjs.init({ publicKey: CONFIG.EMAILJS_PUBLIC }); } catch (e) { }
 
 
 const state = {
-    items: [], addons: [], byobFlavour: '',
+    items: [], addons: [], 
+    bagDetails: [], packDetails: [], // Detailed info for each bag/pack
     total: 0, advance: 0, balance: 0,
     customer: {}, orderId: '',
 };
@@ -205,7 +206,7 @@ function recalcOrder() {
 
 
     const dynamicBags = document.querySelectorAll('.byob-bag-block');
-    let byobSummaryList = [];
+    state.bagDetails = [];
 
     dynamicBags.forEach(block => {
         const bagIdx = block.dataset.bagIndex;
@@ -216,22 +217,18 @@ function recalcOrder() {
         block.querySelectorAll(`input[data-bag-param="${bagIdx}"]:checked`).forEach(cb => {
             const aName = cb.dataset.name;
             const aPrice = parseInt(cb.dataset.price);
-            bagAddons.push(aName);
-            state.addons.push({ name: `${aName} (Bag ${bagIdx})`, price: aPrice });
+            bagAddons.push({ name: aName, price: aPrice });
             total += aPrice;
         });
 
         if (flav) {
-            const addonStr = bagAddons.length ? ` w/ ${bagAddons.join(', ')}` : '';
-            byobSummaryList.push(`Bag ${bagIdx}: ${flav}${addonStr}`);
+            state.bagDetails.push({ index: bagIdx, flavour: flav, addons: bagAddons });
         }
     });
 
-    state.byobFlavour = byobSummaryList.length > 0 ? byobSummaryList.join(' | ') : null;
-
 
     const dynamicPacks = document.querySelectorAll('.choco-pack-block');
-
+    state.packDetails = [];
 
     let packSizes = [];
     document.querySelectorAll('.choco-base-qty').forEach(wrap => {
@@ -246,19 +243,13 @@ function recalcOrder() {
         }
     });
 
-
-
-
-    let chocoSummaryList = [];
     dynamicPacks.forEach((block, idx) => {
         const packIdx = block.dataset.packIndex;
         const sizeStr = packSizes[idx] || 'Pack';
         const typeRadio = block.querySelector(`input[name="pack-${packIdx}-type"]:checked`);
         const chocoType = typeRadio ? typeRadio.value : '';
 
-
-
-
+        let packAddons = [];
         if (chocoType === 'Mix') {
             let mixPremium = 0;
             if (sizeStr === '5pc') mixPremium = 10;
@@ -266,29 +257,22 @@ function recalcOrder() {
             if (sizeStr === '12pc') mixPremium = 20;
 
             if (mixPremium > 0) {
-                state.addons.push({ name: `${sizeStr} Mix Premium (Pack ${packIdx})`, price: mixPremium });
+                packAddons.push({ name: `${sizeStr} Mix Premium`, price: mixPremium });
                 total += mixPremium;
             }
         }
 
-        let packAddons = [];
         block.querySelectorAll(`input[data-pack-param="${packIdx}"]:checked`).forEach(cb => {
             const aName = cb.dataset.name;
             const aPrice = parseInt(cb.dataset.price);
-            packAddons.push(aName);
-            state.addons.push({ name: `${aName} (Pack ${packIdx})`, price: aPrice });
+            packAddons.push({ name: aName, price: aPrice });
             total += aPrice;
         });
 
         if (chocoType) {
-            const addonStr = packAddons.length ? ` w/ ${packAddons.join(', ')}` : '';
-            chocoSummaryList.push(`Pack ${packIdx} (${sizeStr}): ${chocoType}${addonStr}`);
+            state.packDetails.push({ index: packIdx, size: sizeStr, type: chocoType, addons: packAddons });
         }
     });
-
-
-
-    state.chocoFlavour = chocoSummaryList.length > 0 ? chocoSummaryList.join(' | ') : null;
 
     state.total = total;
     state.advance = Math.ceil(total * 0.50);
@@ -360,25 +344,47 @@ function buildSummary() {
       <span class="summary-item-name">${item.name} <span class="summary-item-qty">× ${item.qty}</span></span>
       <span class="summary-item-price">₹${item.price * item.qty}</span>
     </div>`;
+
+        if (item.name === "Chips-Chaat Bag") {
+            state.bagDetails.forEach(bag => {
+                html += `<div class="summary-sub-item">
+          <span class="summary-sub-name">Bag ${bag.index}: ${bag.flavour}</span>
+          <span class="summary-sub-price">+₹0</span>
+        </div>`;
+                bag.addons.forEach(a => {
+                    html += `<div class="summary-sub-item">
+            <span class="summary-sub-name">Add-On: ${a.name}</span>
+            <span class="summary-sub-price">+₹${a.price}</span>
+          </div>`;
+                });
+            });
+        }
+
+        if (item.name.startsWith("Choco Puffs")) {
+            const sizeMatch = item.name.match(/(\d+)pc/);
+            const sizeStr = sizeMatch ? sizeMatch[1] + 'pc' : '';
+            state.packDetails.filter(p => p.size === sizeStr).forEach(pack => {
+                html += `<div class="summary-sub-item">
+          <span class="summary-sub-name">Pack ${pack.index}: ${pack.type}</span>
+          <span class="summary-sub-price">+₹0</span>
+        </div>`;
+                pack.addons.forEach(a => {
+                    html += `<div class="summary-sub-item">
+            <span class="summary-sub-name">Add-On: ${a.name}</span>
+            <span class="summary-sub-price">+₹${a.price}</span>
+          </div>`;
+                });
+            });
+        }
     });
+
     state.addons.forEach(a => {
         html += `<div class="summary-item">
       <span class="summary-item-name">Add-On: ${a.name}</span>
       <span class="summary-item-price">₹${a.price}</span>
     </div>`;
     });
-    if (state.byobFlavour) {
-        html += `<div class="summary-item">
-      <span class="summary-item-name" style="color:var(--warm-gray)">Chips Flavour</span>
-      <span class="summary-item-price" style="font-weight:500;color:var(--warm-gray)">${state.byobFlavour}</span>
-    </div>`;
-    }
-    if (state.chocoFlavour) {
-        html += `<div class="summary-item">
-      <span class="summary-item-name" style="color:var(--warm-gray)">Choco Puffs Flavour</span>
-      <span class="summary-item-price" style="font-weight:500;color:var(--warm-gray)">${state.chocoFlavour}</span>
-    </div>`;
-    }
+
     card.innerHTML = html;
 
     document.getElementById('s-total').textContent = '₹' + state.total;
@@ -392,10 +398,26 @@ document.getElementById('btn-back-2').addEventListener('click', () => showStep(2
 
 
 function buildOrderNote() {
-    const lines = state.items.map(i => `${i.name} × ${i.qty} = ₹${i.price * i.qty}`);
+    const lines = [];
+    state.items.forEach(item => {
+        lines.push(`${item.name} × ${item.qty} = ₹${item.price * item.qty}`);
+        if (item.name === "Chips-Chaat Bag") {
+            state.bagDetails.forEach(bag => {
+                lines.push(`  └─ Bag ${bag.index}: ${bag.flavour}`);
+                bag.addons.forEach(a => lines.push(`     └─ Add-On: ${a.name} (+₹${a.price})`));
+            });
+        }
+        if (item.name.startsWith("Choco Puffs")) {
+            const sizeMatch = item.name.match(/(\d+)pc/);
+            const sizeStr = sizeMatch ? sizeMatch[1] + 'pc' : '';
+            state.packDetails.filter(p => p.size === sizeStr).forEach(pack => {
+                lines.push(`  └─ Pack ${pack.index}: ${pack.type}`);
+                pack.addons.forEach(a => lines.push(`     └─ Add-On: ${a.name} (+₹${a.price})`));
+            });
+        }
+    });
+
     state.addons.forEach(a => lines.push(`Add-On: ${a.name} = ₹${a.price}`));
-    if (state.byobFlavour) lines.push(`Chips-Chaat Flavour: ${state.byobFlavour}`);
-    if (state.chocoFlavour) lines.push(`Choco Puffs Flavour: ${state.chocoFlavour}`);
     if (state.customer.note) lines.push(`Note: ${state.customer.note}`);
     lines.push('---');
     lines.push(`Total: ₹${state.total}  |  Advance: ₹${state.advance}  |  Balance: ₹${state.balance}`);
@@ -538,7 +560,6 @@ async function sendOwnerEmail() {
             advance_paid: '\u20b9' + state.advance,
             balance_due: '\u20b9' + state.balance,
             customer_phone: '+91 ' + state.customer.phone,
-            choco_flavour: state.chocoFlavour || 'N/A',
         });
         console.log('[EmailJS] Owner notification OK:', r.status, r.text);
     } catch (e) {

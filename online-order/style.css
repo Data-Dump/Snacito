@@ -807,7 +807,34 @@ h1, h2, h3, h4 { font-family: 'Playfair Display', serif; color: var(--brand-brow
     border-bottom: 1px solid var(--border-light);
 }
 .summary-head-text { font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); }
-.summary-item { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; border-bottom: 1px solid var(--border-light); font-size: 15px; }
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border-light);
+    align-items: center;
+}
+
+.summary-sub-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px 10px 40px;
+    border-bottom: 1px solid var(--border-light);
+    align-items: center;
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.summary-sub-name {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.summary-sub-price {
+    font-size: 13px;
+    color: var(--brand-gold);
+    font-weight: 600;
+}
 .summary-item:last-child { border-bottom: none; }
 .summary-item-name { color: var(--text-main); font-weight: 600; }
 .summary-item-qty { font-size: 13px; color: var(--brand-brown); margin-left: 8px; font-weight: 700; }
