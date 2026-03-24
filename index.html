@@ -1,247 +1,164 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SNACITO — Digital Menu</title>
+  <title>SNACITO — Premium Midnight Snacks</title>
   <meta name="description"
-    content="Fresh, handcrafted snacks at SNACITO. Waffles, Mini Choco Puffs, Chips-Chaat. Find us at the Aarohan Stall Area." />
-
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@300;400;500;600;700&display=swap"
-    rel="stylesheet" />
-
-
+    content="Fresh, handcrafted snacks at SNACITO. Chips-Chaat, Maggi, Momos. Find us at Spardha, Tech Lawn, JKLU." />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 
 <body>
 
-
+  <!-- Ticker Setup -->
   <div class="ticker-wrap" aria-hidden="true">
     <div class="ticker-track">
-      <span>Fresh &amp; Handcrafted</span>
-      <span>Waffles</span>
-      <span>Mini Choco Puffs</span>
-      <span>Chips-Chaat</span>
-      <span>Made with Love</span>
-      <span>Aarohan Stall Area</span>
-      <span>Fresh &amp; Handcrafted</span>
-      <span>Waffles</span>
-      <span>Mini Choco Puffs</span>
-      <span>Chips-Chaat</span>
-      <span>Made with Love</span>
-      <span>Aarohan Stall Area</span>
+      <span>Fresh & Handcrafted</span><span>Chips-Chaat</span><span>Late Night Cravings</span><span>Spardha 2026</span>
+      <span>Fresh & Handcrafted</span><span>Chips-Chaat</span><span>Late Night Cravings</span><span>Tech Lawn, JKLU</span>
     </div>
   </div>
 
-
+  <!-- Hero Section -->
   <header class="hero">
-    <div class="hero-orb"></div>
-    <div class="hero-badge">&#x2B50; Aarohan Stall Area &#x2B50;</div>
-    <h1>SNA<span>CITO</span></h1>
-    <div class="hero-sub">M &nbsp; E &nbsp; N &nbsp; U</div>
-    <div class="hero-ornament">
-      <div class="hero-line"></div>
-      <div class="hero-star">&#x2736;</div>
-      <div class="hero-line right"></div>
-    </div>
-    <div class="hero-tagline">Fresh &nbsp;·&nbsp; Handcrafted &nbsp;·&nbsp; Made with Love</div>
+    <div class="hero-badge">⭐ Spardha, Tech Lawn, JKLU ⭐</div>
+    <img src="assets/Snacito Logo.png" alt="SNACITO" class="hero-main-logo">
+    <h1 class="hero-tagline">Late Night Cravings, Sorted.</h1>
+    <p class="hero-subtag">Indulge in artisanal midnight snacks. From Belgian decadence to savory street-style chaat,
+      crafted with love.</p>
   </header>
 
-
-  <nav class="nav-tabs" id="nav-tabs">
-    <button class="nav-tab active" onclick="showSection('all')" id="tab-all">All</button>
-    <button class="nav-tab" onclick="showSection('waffles')" id="tab-waffles">&#x1F9C7; Waffles</button>
-    <button class="nav-tab" onclick="showSection('puffs')" id="tab-puffs">&#x1F36B; Choco Puffs</button>
-    <button class="nav-tab" onclick="showSection('byob')" id="tab-byob">&#x1F35F; Chips-Chaat</button>
-  </nav>
-
+  <!-- Navigation -->
+  <div class="nav-wrapper">
+    <nav class="nav-tabs" id="nav-tabs">
+      <button class="nav-tab active" onclick="showSection('all')" id="tab-all">Full Menu</button>
+      <button class="nav-tab" onclick="showSection('byob')" id="tab-byob">🍟 Chips-Chaat</button>
+      <button class="nav-tab" onclick="showSection('maggi')" id="tab-maggi">🍜 Maggi</button>
+      <button class="nav-tab" onclick="showSection('momos')" id="tab-momos">🥟 Momos</button>
+      <button class="nav-tab" onclick="showSection('drinks')" id="tab-drinks">🥤 Drinks</button>
+    </nav>
+  </div>
 
   <main class="main" id="menu-sections">
 
-
-    <section class="category reveal" id="section-waffles">
+    <!-- Chaat -->
+    <section class="category active" id="section-byob">
       <div class="category-header">
-        <div class="category-icon">&#x1F9C7;</div>
-        <div class="category-title-wrap">
-          <div class="category-title">Waffles</div>
-          <div class="category-desc">Crispy outside, fluffy inside — made fresh to order</div>
+        <span class="category-icon">🍟</span>
+        <h2 class="category-title">Chips-Chaat</h2>
+        <p class="category-desc">The ultimate late-night savory mix</p>
+      </div>
+
+      <div class="byob-wrapper">
+        <div class="byob-card">
+          <div class="byob-top">
+            <div>
+              <div class="byob-item-name">Normal Bag <br>with Veggies</div>
+              <div class="byob-item-sub">Pyaz &amp; Tamatar</div>
+            </div>
+            <div>
+              <span
+                style="font-size: 0.8rem; opacity: 0.8; text-transform: uppercase; letter-spacing: 2px;">Price</span>
+              <div class="byob-item-price">₹ 39</div>
+            </div>
+          </div>
+          <div class="byob-flavours">
+            <strong>Available Flavours</strong>
+            <div class="flavour-chips">
+              <span class="flavour-chip">Blue Lays</span><span class="flavour-chip">OG Kurkure</span>
+              <span class="flavour-chip">Doritos</span>
+            </div>
+          </div>
+          <div class="byob-addons">
+            <strong
+              style="display:block; margin-bottom: 1rem; color: var(--brand-gold); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 2px;">Add-Ons</strong>
+            <div class="addon-item"><span>Chipotle</span><span class="addon-price">₹ 15</span></div>
+            <div class="addon-item"><span>Tandoori</span><span class="addon-price">₹ 15</span></div>
+            <div class="addon-item"><span>Mayo</span><span class="addon-price">₹ 15</span></div>
+            <div class="addon-item"><span>Melted Cheese</span><span class="addon-price">₹ 15</span></div>
+          </div>
         </div>
-      </div>
-      <div class="category-rule"></div>
-
-      <div class="sub-label">Single Layer</div>
-      <div class="menu-item">
-        <span class="item-name">Milk Chocolate</span>
-        <span class="item-dots"></span>
-        <span class="item-price">&#x20B9; 69</span>
-      </div>
-      <div class="menu-item">
-        <span class="item-name">Dark Chocolate</span>
-        <span class="item-dots"></span>
-        <span class="item-price">&#x20B9; 69</span>
-      </div>
-      <div class="menu-item">
-        <span class="item-name">Mix Chocolate</span>
-        <span class="item-dots"></span>
-        <span class="item-price">&#x20B9; 79</span>
-      </div>
-      <div class="menu-item">
-        <span class="item-name">KitKat</span>
-        <span class="item-dots"></span>
-        <span class="item-price">&#x20B9; 89</span>
-      </div>
-
-      <div class="sub-label">Double Layer</div>
-      <div class="menu-item">
-        <span class="item-name">Milk Chocolate</span>
-        <span class="item-dots"></span>
-        <span class="item-price">&#x20B9; 99</span>
-      </div>
-      <div class="menu-item">
-        <span class="item-name">Dark Chocolate</span>
-        <span class="item-dots"></span>
-        <span class="item-price">&#x20B9; 99</span>
-      </div>
-      <div class="menu-item">
-        <span class="item-name">Mix Chocolate</span>
-        <span class="item-dots"></span>
-        <span class="item-price">&#x20B9; 109</span>
-      </div>
-      <div class="menu-item">
-        <span class="item-name">KitKat</span>
-        <span class="item-dots"></span>
-        <span class="item-price">&#x20B9; 109</span>
-      </div>
-
-      <div class="sub-label">Triple Layer</div>
-      <div class="menu-item">
-        <span class="item-name">Milk Chocolate</span>
-        <span class="item-dots"></span>
-        <span class="item-price">&#x20B9; 119</span>
-      </div>
-      <div class="menu-item">
-        <span class="item-name">Dark Chocolate</span>
-        <span class="item-dots"></span>
-        <span class="item-price">&#x20B9; 119</span>
-      </div>
-      <div class="menu-item">
-        <span class="item-name">Mix Chocolate</span>
-        <span class="item-dots"></span>
-        <span class="item-price">&#x20B9; 129</span>
-      </div>
-      <div class="menu-item">
-        <span class="item-name">KitKat</span>
-        <span class="item-dots"></span>
-        <span class="item-price">&#x20B9; 139</span>
       </div>
     </section>
 
-
-    <section class="category reveal" id="section-puffs">
+    <!-- Maggi -->
+    <section class="category active" id="section-maggi" style="margin-top: 6rem;">
       <div class="category-header">
-        <div class="category-icon">&#x1F36B;</div>
-        <div class="category-title-wrap">
-          <div class="category-title">Mini Choco Puffs</div>
-          <div class="category-desc">Choose your chocolate — Milk, Dark, or Mix</div>
-        </div>
+        <span class="category-icon">🍜</span>
+        <h2 class="category-title">Maggi</h2>
+        <p class="category-desc">Comfort bowl, quick and satisfying</p>
       </div>
-      <div class="category-rule"></div>
+      <div class="menu-grid">
+        <div class="menu-item" style="padding: 1.2rem 1.5rem; border-radius: 12px; display: flex; justify-content: space-between; align-items: center;">
+          <span class="item-name">Classic</span>
+          <span class="item-price">₹ 39</span>
+        </div>
 
-      <div class="choco-table">
-        <div class="choco-header">
-          <span>Pieces</span>
-          <span>Milk</span>
-          <span>Dark</span>
-          <span>Mix</span>
+        <div class="menu-item" style="padding: 1.2rem 1.5rem; border-radius: 12px; display: flex; justify-content: space-between; align-items: center;">
+          <span class="item-name" style="display: flex; align-items: center; flex-wrap: wrap;">Double Masala <span class="badge recommended" style="margin-left: 8px;">Recommended</span></span>
+          <span class="item-price">₹ 49</span>
         </div>
-        <div class="choco-row">
-          <span class="item-name">5 Pieces</span>
-          <span class="choco-price">&#x20B9;69</span>
-          <span class="choco-price">&#x20B9;69</span>
-          <span class="choco-price">&#x20B9;79</span>
-        </div>
-        <div class="choco-row">
-          <span class="item-name">8 Pieces</span>
-          <span class="choco-price">&#x20B9;89</span>
-          <span class="choco-price">&#x20B9;89</span>
-          <span class="choco-price">&#x20B9;109</span>
-        </div>
-        <div class="choco-row">
-          <span class="item-name">12 Pieces</span>
-          <span class="choco-price">&#x20B9;119</span>
-          <span class="choco-price">&#x20B9;119</span>
-          <span class="choco-price">&#x20B9;139</span>
-        </div>
-      </div>
 
-      <div class="addons-box">
-        <div class="addons-label">Add-Ons</div>
-        <div class="addon-item">
-          <span>Choco Filling</span>
-          <span class="addon-price">&#x20B9; 10</span>
+        <div class="menu-item" style="padding: 1.2rem 1.5rem; border-radius: 12px; display: flex; justify-content: space-between; align-items: center;">
+          <span class="item-name" style="display: flex; align-items: center; flex-wrap: wrap;">Cheese</span>
+          <span class="item-price">₹ 59</span>
         </div>
-        <div class="addon-item">
-          <span>Choco Chips</span>
-          <span class="addon-price">&#x20B9; 10</span>
+
+        <div class="menu-item" style="padding: 1.2rem 1.5rem; border-radius: 12px; display: flex; justify-content: space-between; align-items: center;">
+          <span class="item-name" style="display: flex; align-items: center; flex-wrap: wrap;">Cheese Garlic <span class="badge recommended" style="margin-left: 8px;">Recommended</span></span>
+          <span class="item-price">₹ 69</span>
         </div>
       </div>
     </section>
 
 
-    <section class="category reveal" id="section-byob">
+
+    <!-- Momos -->
+    <section class="category active" id="section-momos" style="margin-top: 6rem;">
       <div class="category-header">
-        <div class="category-icon">&#x1F35F;</div>
-        <div class="category-title-wrap">
-          <div class="category-title">Chips-Chaat</div>
-          <div class="category-desc">Chips-Chaat — Chips Concept</div>
+        <span class="category-icon">🥟</span>
+        <h2 class="category-title">Momos (8 pcs)</h2>
+        <p class="category-desc">Steamed and delicious</p>
+      </div>
+      <div class="menu-grid">
+        <div class="menu-item" style="padding: 1.2rem 1.5rem; border-radius: 12px; display: flex; justify-content: space-between; align-items: center;">
+          <span class="item-name" style="display: flex; align-items: center; flex-wrap: wrap;">Steam <span class="badge recommended" style="margin-left: 8px;">Recommended</span></span>
+          <span class="item-price">₹ 59</span>
+        </div>
+        <div class="menu-item" style="padding: 1.2rem 1.5rem; border-radius: 12px; display: flex; justify-content: space-between; align-items: center;">
+          <span class="item-name">Fried</span>
+          <span class="item-price">₹ 69</span>
+        </div>
+        <div class="menu-item" style="padding: 1.2rem 1.5rem; border-radius: 12px; display: flex; justify-content: space-between; align-items: center;">
+          <span class="item-name" style="display: flex; align-items: center; flex-wrap: wrap;">Kurkure <span class="badge recommended" style="margin-left: 8px;">Recommended</span></span>
+          <span class="item-price">₹ 79</span>
+        </div>
+        <div class="menu-item" style="padding: 1.2rem 1.5rem; border-radius: 12px; display: flex; justify-content: space-between; align-items: center;">
+          <span class="item-name">Chipotle Fried</span>
+          <span class="item-price">₹ 89</span>
         </div>
       </div>
-      <div class="category-rule"></div>
+    </section>
 
-      <div class="byob-card">
-        <div class="byob-glow"></div>
-        <div class="byob-glow-2"></div>
-        <div class="byob-top">
-          <div>
-            <div class="byob-item-name">Normal Bag with Veggies</div>
-            <div class="byob-item-sub">Pyaz &amp; Tamatar</div>
-          </div>
-          <div class="byob-price-wrap">
-            <div class="byob-price-label">Price</div>
-            <div class="byob-item-price">&#x20B9;39</div>
-          </div>
-        </div>
-
-        <div class="byob-flavours">
-          <strong>Available Flavours</strong>
-          <div class="flavour-chips">
-            <span class="flavour-chip">Tomato</span>
-            <span class="flavour-chip">Indian Masala</span>
-            <span class="flavour-chip">Salted</span>
-            <span class="flavour-chip">Doritos</span>
-            <span class="flavour-chip">OG Kurkure</span>
-          </div>
-        </div>
-
-        <div class="byob-addons">
-          <div class="addons-label">Add-Ons</div>
-          <div class="addon-item">
-            <span>Mayo</span>
-            <span class="addon-price">&#x20B9; 10</span>
-          </div>
-          <div class="addon-item">
-            <span>Tandoori Mayo</span>
-            <span class="addon-price">&#x20B9; 15</span>
-          </div>
-          <div class="addon-item">
-            <span>Hot Sauce</span>
-            <span class="addon-price">&#x20B9; 15</span>
+    <!-- Drinks -->
+    <section class="category active" id="section-drinks" style="margin-top: 6rem;">
+      <div class="category-header">
+        <span class="category-icon">🥤</span>
+        <h2 class="category-title">Drinks</h2>
+        <p class="category-desc">Freshly squeezed lemonade</p>
+      </div>
+      <div class="byob-wrapper">
+        <div class="byob-card" style="padding-bottom: 2rem;">
+          <div class="byob-top" style="border-bottom: none; padding-bottom: 0; margin-bottom: 0;">
+            <div style="flex:1;">
+              <div class="byob-item-name">OG Nimbu Pani</div>
+              <div class="byob-item-sub" style="opacity: 0.8;">Chilled & Refreshing</div>
+            </div>
+            <div style="text-align: right;">
+              <span style="font-size: 0.75rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #fff; display: block; margin-bottom: 5px;">Price</span>
+              <div class="byob-item-price" style="font-size: 3rem; font-weight: 800; color: #fff; line-height: 1;">₹ 15</div>
+            </div>
           </div>
         </div>
       </div>
@@ -249,29 +166,87 @@
 
   </main>
 
-
-  <div class="footer-divider"></div>
-  <footer>
-    <div class="footer-brand">SNACITO</div>
-    <div class="footer-tagline-strip">
-      <span>Fresh</span>
-      <span class="footer-dot">·</span>
-      <span>Handcrafted</span>
-      <span class="footer-dot">·</span>
-      <span>Made With Love</span>
+  <footer class="site-footer">
+    <div class="footer-main">
+      <div class="footer-brand">
+        <img src="assets/Snacito Logo.png" alt="Snacito Logo" class="footer-logo">
+        <p>Bringing the finest, handcrafted midnight snacks to satisfy your nocturnal cravings. Quality ingredients,
+          unforgettable taste.</p>
+        <div style="font-weight: 700; color: var(--brand-brown); display: flex; align-items: center; gap: 0.5rem;">
+          <span style="font-size:1.2rem;">📞</span> <a href="tel:+919644679988"
+            style="color:inherit; text-decoration:none;">+91 96446 79988</a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/online-order">Order Online</a></li>
+          <li><a href="/about-us">About Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Find The Stall</h4>
+        <p style="color: var(--text-muted); line-height: 1.6;">
+          <strong>Spardha (27-29 March)</strong><br>
+          Tech Lawn, JK Lakshmipat University<br>
+          Mahapura, Jaipur<br>
+          Rajasthan - 302026
+        </p>
+        <a href="https://maps.app.goo.gl/oAqVafQZNmhE263v9" target="_blank" class="footer-btn-map">Open Map ↗</a>
+      </div>
     </div>
-    <div class="footer-loc">&#x1F4CD; Aarohan Stall Area</div>
-    <div class="footer-love">Made with <span>&hearts;</span> for the best snacks in campus</div>
+    <div class="footer-bottom">
+      &copy; 2026 SNACITO. Designed beautifully per your request.
+    </div>
   </footer>
 
-
   <a href="/online-order" class="btn-floating-onlineorder">
-    <span class="btn-onlineorder-icon">👉</span>
-    Order Now
+    <span>🛒</span> Order Now
   </a>
 
-  <script src="js/main.js"></script>
+  <!-- Popup -->
+  <div id="hack-popup">
+    <div id="hack-popup-content">
+      <button class="popup-close" onclick="closePopup()">✕</button>
+      <div style="display: flex; justify-content: center; align-items: center; gap: 15px; margin-bottom: 1.5rem;">
+        <img src="assets/Snacito Logo.png" alt="Snacito" style="height: 50px;">
+        <span style="font-weight: 800; font-size: 1.2rem; color: var(--brand-gold);">X</span>
+        <img src="assets/Spardha_Logo.png" alt="Spardha" style="height: 50px; border-radius: 8px;">
+      </div>
+      <h2 class="popup-title">Snacito is coming to<br><span class="popup-highlight">Spardha!</span></h2>
+      <p style="color: var(--text-muted); font-weight: 500; font-size: 1.1rem; margin-bottom: 0.5rem;">27-29 March</p>
+      <p style="color: var(--text-muted);">Serving delicious midnight fuel all night long.</p>
+      <div class="popup-loc">📍 Tech Lawn, JKLU</div>
+    </div>
+  </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+  <script>
+    function showSection(id) {
+      document.querySelectorAll('.nav-tab').forEach(btn => btn.classList.remove('active'));
+      document.getElementById('tab-' + id).classList.add('active');
+
+      const sections = document.querySelectorAll('.category');
+      if (id === 'all') {
+        sections.forEach(sec => sec.classList.add('active'));
+      } else {
+        sections.forEach(sec => {
+          if (sec.id === 'section-' + id) sec.classList.add('active');
+          else sec.classList.remove('active');
+        });
+      }
+    }
+
+    function closePopup() {
+      document.getElementById('hack-popup').classList.remove('show');
+    }
+
+    setTimeout(() => {
+      document.getElementById('hack-popup').classList.add('show');
+      confetti({ particleCount: 150, spread: 90, zIndex: 10000, origin: { y: 0.6 }, colors: ['#613721', '#D4A017', '#FFFAF4'] });
+    }, 1200);
+  </script>
 </body>
 
 </html>

@@ -1,9 +1,9 @@
 # SNACITO — The Complete Digital Platform 🍫
 
-A premium, full-featured web application for **SNACITO**, a handcrafted snack brand at the Aarohan Stall Area.
+A premium, full-featured web application for **SNACITO**, a handcrafted snack brand at HackJKLU v5.0, Tech Lawn, JKLU.
 This repository contains the complete three-part frontend platform: the Digital Menu, the Online-Order Wizard, and the Admin Panel. 
 
-Built entirely with pure HTML, CSS, and Vanilla JavaScript (zero frameworks). The codebase is meticulously clean and 100% comment-free for production delivery.
+Built entirely with pure HTML, CSS, and Vanilla JavaScript (zero frameworks).
 
 ---
 
@@ -59,4 +59,4 @@ Before deploying, ensure the `CONFIG` object in `online-order/main.js` and `ADMI
 
 ---
 
-*Fresh · Handcrafted · Made with Love — SNACITO @ Aarohan Stall Area*
+*Fresh · Handcrafted · Made with Love — SNACITO @ HackJKLU v5.0, Tech Lawn, JKLU*

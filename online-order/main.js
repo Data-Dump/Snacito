@@ -1,7 +1,7 @@
 
 
 const CONFIG = {
-    UPI_ID: '9644679988@kotak811',
+    UPI_ID: 'BHARATPE.8G0G1N2J4N06567@fbpe',
     UPI_NAME: 'SNACITO',
     YOUR_WA_NUMBER: '919644679988',
     EMAILJS_PUBLIC: 'gpa_WIcSR9HBprfFA',
@@ -62,11 +62,12 @@ document.querySelectorAll('.choco-qty-row .qty-btn').forEach(btn => {
 
 document.querySelectorAll('[data-addon]').forEach(cb => cb.addEventListener('change', recalcOrder));
 
-const BYOB_FLAVOURS = ['Tomato', 'Indian Masala', 'Salted', 'Doritos', 'OG Kurkure'];
+const BYOB_FLAVOURS = ['Blue Lays', 'OG Kurkure', 'Doritos'];
 const BYOB_ADDONS = [
-    { name: 'Mayo', price: 10 },
-    { name: 'Tandoori Mayo', price: 15 },
-    { name: 'Hot Sauce', price: 15 }
+    { name: 'Chipotle', price: 15 },
+    { name: 'Tandoori', price: 15 },
+    { name: 'Mayo', price: 15 },
+    { name: 'Melted Cheese', price: 15 }
 ];
 
 const CHOCO_TYPES = ['Milk', 'Dark', 'Mix'];
@@ -341,7 +342,7 @@ document.getElementById('btn-to-step3').addEventListener('click', () => {
         name: nameEl.value.trim(),
         email: emailEl.value.trim(),
         phone: phoneEl.value.trim(),
-        rollno: document.getElementById('f-rollno').value.trim(),
+        rollno: null,
         note: document.getElementById('f-note').value.trim(),
     };
 
@@ -509,7 +510,7 @@ async function sendEmail() {
             to_email: state.customer.email,
             order_id: state.orderId,
             order_date: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }),
-            pickup_date: 'March 6th, 2026 — Aarohan Stall Area',
+            pickup_date: 'March 13th-15th, 2026 — HackJKLU v5.0 @ Tech Lawn, JKLU',
             order_items: buildOrderNote(),
             order_total: '\u20b9' + state.total,
             advance_paid: '\u20b9' + state.advance,
@@ -531,7 +532,7 @@ async function sendOwnerEmail() {
             to_email: CONFIG.BUSINESS_EMAIL,
             order_id: state.orderId,
             order_date: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }),
-            pickup_date: 'March 6th, 2026 — Aarohan Stall Area',
+            pickup_date: 'March 13th-15th, 2026 — HackJKLU v5.0 @ Tech Lawn, JKLU',
             order_items: buildOrderNote(),
             order_total: '\u20b9' + state.total,
             advance_paid: '\u20b9' + state.advance,
