@@ -484,7 +484,7 @@ h1, h2, h3, h4 { font-family: 'Playfair Display', serif; color: var(--brand-brow
     margin-bottom: 10px;
 }
 .addons-box.dark .addons-label {
-    color: var(--brand-brown);
+    color: rgba(255,255,255,0.6);
 }
 .addon-chips {
     display: flex;
@@ -541,6 +541,7 @@ h1, h2, h3, h4 { font-family: 'Playfair Display', serif; color: var(--brand-brow
 
 .flavour-section { margin-top: 18px; }
 .flavour-label { font-size: 9px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; }
+.byob-bag-block .flavour-label { color: rgba(255,255,255,0.6); }
 .flavour-chips { display: flex; flex-wrap: wrap; gap: 8px; }
 .flavour-chip {
     display: flex;
@@ -564,6 +565,18 @@ h1, h2, h3, h4 { font-family: 'Playfair Display', serif; color: var(--brand-brow
     background: rgba(97, 55, 33, 0.08); 
     color: var(--brand-brown); 
     font-weight: 700; 
+}
+.byob-bag-block .flavour-chip:has(input:checked),
+.byob-bag-block .addon-chip.dark:has(input:checked) {
+    border-color: var(--brand-gold-light) !important;
+    background: var(--brand-gold-light) !important;
+    color: var(--brand-brown-dark) !important;
+}
+.byob-bag-block .addon-chip.dark em {
+    color: var(--brand-gold);
+}
+.byob-bag-block .addon-chip.dark:has(input:checked) em {
+    color: var(--brand-brown-dark);
 }
 
 

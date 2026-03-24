@@ -93,23 +93,23 @@ function updateChocoBlocks(qty) {
 
             block.style.cssText = 'background: rgba(240, 180, 41, 0.05); border: 1.5px dashed rgba(184, 134, 11, 0.3); border-radius: 12px; padding: 14px; margin-top: 10px;';
 
-            let html = `<div style="font-size: 13px; font-weight: 700; color: var(--brown); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">Pack ${i}</div>`;
+            let html = `<div style="font-size: 13px; font-weight: 700; color: var(--brand-brown); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">Pack ${i}</div>`;
 
             html += `<div class="flavour-section" style="margin-bottom: 12px;">`;
-            html += `<div class="flavour-label" style="margin-bottom: 8px; color: var(--warm-gray);">1. Chocolate Base</div>`;
+            html += `<div class="flavour-label" style="margin-bottom: 8px; color: var(--text-muted);">1. Chocolate Base</div>`;
             html += `<div class="flavour-chips" style="display:flex; flex-wrap:wrap; gap:6px;">`;
             CHOCO_TYPES.forEach((f, idx) => {
                 const checked = (idx === 0) ? 'checked' : '';
-                html += `<label class="flavour-chip"><input type="radio" name="pack-${i}-type" value="${f}" onchange="recalcOrder()" ${checked}><span style="color:var(--dark); border-color:var(--border);">${f}</span></label>`;
+                html += `<label class="flavour-chip"><input type="radio" name="pack-${i}-type" value="${f}" onchange="recalcOrder()" ${checked}><span>${f}</span></label>`;
             });
             html += `</div></div>`;
 
 
             html += `<div class="addons-box" style="background:transparent; border:none; padding:0; margin-top:0;">`;
-            html += `<div class="addons-label" style="margin-bottom: 8px; color: var(--warm-gray);">2. Add-Ons (Optional)</div>`;
+            html += `<div class="addons-label" style="margin-bottom: 8px; color: var(--text-muted);">2. Add-Ons (Optional)</div>`;
             html += `<div class="addon-chips" style="display:flex; flex-wrap:wrap; gap:6px;">`;
             CHOCO_ADDONS.forEach(a => {
-                html += `<label class="addon-chip"><input type="checkbox" data-pack-param="${i}" data-name="${a.name}" data-price="${a.price}" onchange="recalcOrder()"><span style="color:var(--dark); border-color:var(--border);">${a.name} <em>+₹${a.price}</em></span></label>`;
+                html += `<label class="addon-chip"><input type="checkbox" data-pack-param="${i}" data-name="${a.name}" data-price="${a.price}" onchange="recalcOrder()"><span>${a.name} <em>+₹${a.price}</em></span></label>`;
             });
             html += `</div></div>`;
 
@@ -141,7 +141,7 @@ function updateBYOBBlocks(qty) {
             block.dataset.bagIndex = i;
             block.style.cssText = 'background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 14px; margin-top: 10px;';
 
-            let html = `<div style="font-size: 13px; font-weight: 700; color: var(--gold-light); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">Bag ${i}</div>`;
+            let html = `<div style="font-size: 13px; font-weight: 700; color: var(--brand-gold-light); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">Bag ${i}</div>`;
 
             html += `<div class="flavour-section" style="margin-bottom: 12px;">`;
             html += `<div class="flavour-label" style="margin-bottom: 8px;">1. Select Flavour</div>`;
