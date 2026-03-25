@@ -39,7 +39,7 @@
     <header class="hero">
         <div class="hero-orb"></div>
         <a href="/" class="back-link">&#8592; Back to Menu</a>
-        <div class="hero-badge">&#x1F4C5; 27, 28, 29 March &nbsp;·&nbsp; Tech Lawn, JKLU</div>
+        <div class="hero-badge">&#x1F4C5; 27, 28, 29 March &nbsp;·&nbsp; Main Sports Ground, JKLU</div>
         <div style="display:flex; justify-content:center; margin: 10px 0; position: relative; z-index: 2;">
             <img src="../assets/Snacito Logo.png" alt="Snacito Logo" style="height: 110px; max-width: 90vw; object-fit: contain;">
         </div>
@@ -49,7 +49,7 @@
             <div class="hero-star">✶</div>
             <div class="hero-line right"></div>
         </div>
-        <div class="hero-tagline">Reserve your snacks &nbsp;·&nbsp; Pay 50% now &nbsp;·&nbsp; Pick up on 27-29 March
+        <div class="hero-tagline">Reserve your snacks online &nbsp;·&nbsp; Pick up at the stall on 27-29 March
         </div>
     </header>
 
@@ -91,7 +91,7 @@
                             stroke-linejoin="round" />
                     </svg>
                 </div>
-                <div class="step-label">Pay &amp; Confirm</div>
+                <div class="step-label">Confirm</div>
             </div>
 
         </div>
@@ -294,39 +294,35 @@
         <div class="step-panel" id="step-3">
 
             <div class="panel-header">
-                <div class="panel-title">Review &amp; Pay</div>
-                <div class="panel-sub">50% advance secures your slot. Balance is paid at the stall on pickup day.</div>
+                <div class="panel-title">Review &amp; Confirm</div>
+                <div class="panel-sub">Check your order below, then choose how you'd like to pay.</div>
             </div>
-
 
             <div class="summary-card" id="summary-card"></div>
 
-
             <div class="totals-card">
-                <div class="totals-row">
+                <div class="totals-row" style="font-size:1.1rem; font-weight:800;">
                     <span>Order Total</span>
                     <span id="s-total">₹0</span>
-                </div>
-                <div class="totals-row advance">
-                    <span>50% Advance (pay now)</span>
-                    <span id="s-advance">₹0</span>
-                </div>
-                <div class="totals-row balance">
-                    <span>Balance (pay at stall)</span>
-                    <span id="s-balance">₹0</span>
                 </div>
             </div>
 
             <div class="disclaimer">
-                ⚠️ &nbsp;Your order is <strong>confirmed only after the advance payment</strong>. We'll send a
-                confirmation email and WhatsApp message with your order ID.
+                Choose your payment method below. You'll receive a WhatsApp confirmation with your order details.
             </div>
 
-            <div class="step-nav">
-                <button class="btn-back" id="btn-back-2">&#8592; Back</button>
-                <button class="btn-pay" id="btn-pay">
-                    <span id="pay-text">Pay Advance ₹<span id="pay-amount">0</span> →</span>
+            <div style="display:flex; flex-direction:column; gap:12px; margin-top:16px;">
+                <button class="btn-pay" id="btn-pay-counter" style="background: var(--brand-brown); color: var(--brand-cream); font-size: 1rem; padding: 18px 24px; border-radius: 14px; border: none; cursor: pointer; font-family: inherit; font-weight: 700; display:flex; align-items:center; justify-content:center; gap:10px; transition: 0.2s;">
+                    🏪 <span>Pay at Counter</span>
                 </button>
+                <button class="btn-pay" id="btn-pay-online" style="background: linear-gradient(135deg, #2ecc71, #27ae60); color: #fff; font-size: 1rem; padding: 18px 24px; border-radius: 14px; border: none; cursor: pointer; font-family: inherit; font-weight: 700; display:flex; align-items:center; justify-content:center; gap:10px; transition: 0.2s;">
+                    💳 <span>Pay Online (₹<span id="pay-amount">0</span>)</span>
+                </button>
+            </div>
+
+            <div class="step-nav" style="margin-top:16px;">
+                <button class="btn-back" id="btn-back-2">&#8592; Back</button>
+                <div></div>
             </div>
         </div>
 
@@ -337,9 +333,11 @@
                 <div class="success-title">Order Confirmed!</div>
                 <div class="success-sub">
                     Hey <strong id="succ-name"></strong>! Your order is locked in.<br>
-                    Check your email for the confirmation. See you at the stall on <strong>27, 28, 29 March</strong>!
+                    <span id="succ-payment-note"></span><br>
+                    See you at the SNACITO stall on <strong>27, 28, 29 March</strong> at Main Sports Ground, JKLU!
                 </div>
                 <div class="success-order-id">Order ID: <span id="succ-order-id"></span></div>
+                <div style="font-size:0.82rem; color:var(--text-muted); margin-top:12px;">You'll receive a WhatsApp confirmation from our team shortly 📱</div>
                 <a href="/" class="btn-home">← Browse Menu</a>
             </div>
         </div>
@@ -354,12 +352,10 @@
                     <div class="upi-sub">Scan or tap to open any UPI app</div>
                 </div>
 
-
                 <div class="upi-qr-wrap">
                     <img id="upi-qr-img" src="" alt="UPI QR Code" width="180" height="180"
                         style="border-radius:12px;border:6px solid white;box-shadow:0 8px 30px rgba(92,45,10,0.15);" />
                 </div>
-
 
                 <div class="upi-id-row">
                     <span class="upi-id-label">UPI ID</span>
@@ -367,17 +363,14 @@
                     <button class="upi-copy" id="upi-copy-btn" title="Copy UPI ID">Copy</button>
                 </div>
 
-
                 <a class="btn-upi-app" id="btn-upi-app" href="#">Open in UPI App →</a>
 
                 <div class="upi-instructions">
                     <div class="upi-step"><span>1</span> Scan QR or open your UPI app</div>
-                    <div class="upi-step"><span>2</span> Pay exactly ₹<span id="upi-amt-inline">0</span> (50% advance)
-                    </div>
+                    <div class="upi-step"><span>2</span> Pay ₹<span id="upi-amt-inline">0</span></div>
                 </div>
 
-
-                <button class="btn-paid" id="btn-paid">✅ &nbsp;I've Paid!!</button>
+                <button class="btn-paid" id="btn-paid">✅ &nbsp;I've Paid!</button>
 
                 <div class="upi-note">⚠️ Orders are confirmed only after we verify your payment.</div>
             </div>
@@ -410,7 +403,7 @@
                 <h4>Find The Stall</h4>
                 <p style="color: var(--text-muted); line-height: 1.6;">
                     <strong>Spardha (27-29 March)</strong><br>
-                    Tech Lawn, JK Lakshmipat University<br>
+                    Main Sports Ground, JK Lakshmipat University<br>
                     Mahapura, Jaipur<br>
                     Rajasthan - 302026
                 </p>

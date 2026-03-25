@@ -15,11 +15,44 @@ const CONFIG = {
 
 try { emailjs.init({ publicKey: CONFIG.EMAILJS_PUBLIC }); } catch (e) { }
 
+// ─── Serial Order ID (format: SNK-DDMM-NNNN, synced from Supabase) ───
+async function generateOrderId() {
+    const now = new Date();
+    const dateStr = String(now.getDate()).padStart(2, '0') + String(now.getMonth() + 1).padStart(2, '0');
+    let maxNum = 3569;
+
+    try {
+        const headers = {
+            'apikey': CONFIG.SUPABASE_KEY,
+            'Authorization': 'Bearer ' + CONFIG.SUPABASE_KEY
+        };
+
+        const [posRes, onlineRes] = await Promise.all([
+            fetch(CONFIG.SUPABASE_URL + '/rest/v1/pos_orders?select=token&order=id.desc&limit=20', { headers }).then(r => r.json()).catch(() => []),
+            fetch(CONFIG.SUPABASE_URL + '/rest/v1/orders?select=order_id&order=id.desc&limit=20', { headers }).then(r => r.json()).catch(() => [])
+        ]);
+
+        posRes.forEach(o => {
+            const m = (o.token || '').match(/SNK-\d{4}-(\d+)/);
+            if (m) maxNum = Math.max(maxNum, parseInt(m[1], 10));
+        });
+        onlineRes.forEach(o => {
+            const m = (o.order_id || '').match(/SNK-\d{4}-(\d+)/);
+            if (m) maxNum = Math.max(maxNum, parseInt(m[1], 10));
+        });
+    } catch (e) {
+        console.warn('[OrderId] Supabase fetch failed');
+    }
+
+    return 'SNK-' + dateStr + '-' + (maxNum + 1);
+}
+
 
 const state = {
     items: [], addons: [], 
-    bagDetails: [], packDetails: [], // Detailed info for each bag/pack
-    total: 0, advance: 0, balance: 0,
+    bagDetails: [], packDetails: [],
+    total: 0,
+    paymentMethod: 'counter', // 'counter' or 'online'
     customer: {}, orderId: '',
 };
 
@@ -275,8 +308,6 @@ function recalcOrder() {
     });
 
     state.total = total;
-    state.advance = Math.ceil(total * 0.50);
-    state.balance = total - state.advance;
 
     const totalItems = state.items.reduce((s, i) => s + i.qty, 0);
     const cartBar = document.getElementById('cart-bar');
@@ -388,9 +419,7 @@ function buildSummary() {
     card.innerHTML = html;
 
     document.getElementById('s-total').textContent = '₹' + state.total;
-    document.getElementById('s-advance').textContent = '₹' + state.advance;
-    document.getElementById('s-balance').textContent = '₹' + state.balance;
-    document.getElementById('pay-amount').textContent = state.advance;
+    document.getElementById('pay-amount').textContent = state.total;
 }
 
 document.getElementById('btn-back-2').addEventListener('click', () => showStep(2));
@@ -420,14 +449,33 @@ function buildOrderNote() {
     state.addons.forEach(a => lines.push(`Add-On: ${a.name} = ₹${a.price}`));
     if (state.customer.note) lines.push(`Note: ${state.customer.note}`);
     lines.push('---');
-    lines.push(`Total: ₹${state.total}  |  Advance: ₹${state.advance}  |  Balance: ₹${state.balance}`);
+    lines.push(`Total: ₹${state.total}  |  Payment: ${state.paymentMethod === 'online' ? 'Paid Online' : 'Pay at Counter'}`);
     return lines.join('\n');
 }
 
 
-document.getElementById('btn-pay').addEventListener('click', () => {
+// ─── PAY AT COUNTER ───
+document.getElementById('btn-pay-counter').addEventListener('click', async () => {
+    const btn = document.getElementById('btn-pay-counter');
+    btn.disabled = true;
+    btn.innerHTML = '⏳ Placing Order...';
+
+    state.paymentMethod = 'counter';
+    state.orderId = await generateOrderId();
+
+    await saveOrder();
+    await Promise.allSettled([sendEmail(), sendOwnerEmail()]);
+    showSuccess();
+
+    btn.disabled = false;
+    btn.innerHTML = '🏪 <span>Pay at Counter</span>';
+});
+
+// ─── PAY ONLINE ───
+document.getElementById('btn-pay-online').addEventListener('click', () => {
     try {
-        if (state.advance <= 0) { alert('Please add at least one item'); return; }
+        if (state.total <= 0) { alert('Please add at least one item'); return; }
+        state.paymentMethod = 'online';
         openUPIModal();
     } catch (e) {
         console.error('UPI modal error:', e);
@@ -435,26 +483,20 @@ document.getElementById('btn-pay').addEventListener('click', () => {
     }
 });
 
-function openUPIModal() {
-    const orderId = 'SNK' + Date.now().toString(36).toUpperCase();
+async function openUPIModal() {
+    const orderId = await generateOrderId();
     state.orderId = orderId;
 
+    const upiLink = `upi://pay?pa=${encodeURIComponent(CONFIG.UPI_ID)}&pn=${encodeURIComponent(CONFIG.UPI_NAME)}&am=${state.total}&cu=INR&tn=${encodeURIComponent('SNACITO-' + orderId)}`;
 
-    const upiLink = `upi://pay?pa=${encodeURIComponent(CONFIG.UPI_ID)}&pn=${encodeURIComponent(CONFIG.UPI_NAME)}&am=${state.advance}&cu=INR&tn=${encodeURIComponent('SNACITO-' + orderId)}`;
-
-
-    document.getElementById('upi-amount').textContent = state.advance;
-    document.getElementById('upi-amt-inline').textContent = state.advance;
+    document.getElementById('upi-amount').textContent = state.total;
+    document.getElementById('upi-amt-inline').textContent = state.total;
     document.getElementById('upi-id-display').textContent = CONFIG.UPI_ID;
     document.getElementById('btn-upi-app').href = upiLink;
-
-
-
 
     const overlay = document.getElementById('upi-overlay');
     overlay.style.display = 'flex';
     document.body.style.overflow = 'hidden';
-
 
     const qrImg = document.getElementById('upi-qr-img');
     qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(upiLink)}&color=3a1a05&bgcolor=ffffff&margin=10&format=png`;
@@ -501,7 +543,7 @@ async function saveOrder() {
         name: state.customer.name,
         email: state.customer.email,
         phone: state.customer.phone,
-        amount: state.advance,
+        amount: state.paymentMethod === 'online' ? state.total : 0,
         items: buildOrderNote(),
         status: 'pending'
     };
@@ -532,11 +574,11 @@ async function sendEmail() {
             to_email: state.customer.email,
             order_id: state.orderId,
             order_date: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }),
-            pickup_date: 'March 13th-15th, 2026 — HackJKLU v5.0 @ Tech Lawn, JKLU',
+            pickup_date: 'March 27-29, 2026 — Spardha @ Main Sports Ground, JKLU',
             order_items: buildOrderNote(),
             order_total: '\u20b9' + state.total,
-            advance_paid: '\u20b9' + state.advance,
-            balance_due: '\u20b9' + state.balance,
+            advance_paid: state.paymentMethod === 'online' ? '\u20b9' + state.total + ' (Paid Online)' : 'Pay at Counter',
+            balance_due: state.paymentMethod === 'online' ? '\u20b90 — Fully Paid' : '\u20b9' + state.total,
             customer_phone: '+91 ' + state.customer.phone,
         });
         console.log('[EmailJS] Customer email OK:', r.status, r.text);
@@ -554,11 +596,11 @@ async function sendOwnerEmail() {
             to_email: CONFIG.BUSINESS_EMAIL,
             order_id: state.orderId,
             order_date: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }),
-            pickup_date: 'March 13th-15th, 2026 — HackJKLU v5.0 @ Tech Lawn, JKLU',
+            pickup_date: 'March 27-29, 2026 — Spardha @ Main Sports Ground, JKLU',
             order_items: buildOrderNote(),
             order_total: '\u20b9' + state.total,
-            advance_paid: '\u20b9' + state.advance,
-            balance_due: '\u20b9' + state.balance,
+            advance_paid: state.paymentMethod === 'online' ? '\u20b9' + state.total + ' (Paid Online)' : 'Pay at Counter',
+            balance_due: state.paymentMethod === 'online' ? '\u20b90 — Fully Paid' : '\u20b9' + state.total,
             customer_phone: '+91 ' + state.customer.phone,
         });
         console.log('[EmailJS] Owner notification OK:', r.status, r.text);
@@ -574,7 +616,39 @@ async function sendOwnerEmail() {
 function showSuccess() {
     document.getElementById('succ-name').textContent = state.customer.name.split(' ')[0];
     document.getElementById('succ-order-id').textContent = state.orderId;
+
+    // Payment note
+    const payNote = state.paymentMethod === 'online'
+        ? 'Payment received online ✓ No balance due.'
+        : 'Please pay ₹' + state.total + ' at the counter when you pick up.';
+    document.getElementById('succ-payment-note').textContent = payNote;
+
+    // Build WhatsApp confirmation link
+    const waMsg = buildWhatsAppConfirmation();
+    const waLink = `https://wa.me/91${state.customer.phone}?text=${encodeURIComponent(waMsg)}`;
+    document.getElementById('succ-wa-link').href = waLink;
+
     showStep('success');
+}
+
+function buildWhatsAppConfirmation() {
+    const payText = state.paymentMethod === 'online'
+        ? '💳 Payment: Paid Online (₹' + state.total + ')'
+        : '🏪 Payment: Pay at Counter (₹' + state.total + ')';
+
+    let itemLines = '';
+    state.items.forEach(item => {
+        itemLines += `\n• ${item.name} × ${item.qty} — ₹${item.price * item.qty}`;
+    });
+
+    return `Hey ${state.customer.name}! 🎉 Thank you for ordering from *SNACITO*!\n\n` +
+        `📋 *Order ID:* ${state.orderId}\n` +
+        `🛒 *Items:*${itemLines}\n\n` +
+        `💰 *Total:* ₹${state.total}\n` +
+        `${payText}\n\n` +
+        `📍 Pick up at *SNACITO Stall*, Main Sports Ground, JKLU\n` +
+        `📅 27-29 March 2026\n\n` +
+        `See you there! 🤙`;
 }
 
 
