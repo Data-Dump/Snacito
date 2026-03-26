@@ -575,11 +575,6 @@ function showSuccess() {
         : 'Please pay ₹' + state.total + ' at the counter when you pick up.';
     document.getElementById('succ-payment-note').textContent = payNote;
 
-    // Build WhatsApp confirmation link
-    const waMsg = buildWhatsAppConfirmation();
-    const waLink = `https://wa.me/91${state.customer.phone}?text=${encodeURIComponent(waMsg)}`;
-    document.getElementById('succ-wa-link').href = waLink;
-
     showStep('success');
 }
 
