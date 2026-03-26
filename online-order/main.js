@@ -4,16 +4,12 @@ const CONFIG = {
     UPI_ID: 'BHARATPE.8G0G1N2J4N06567@fbpe',
     UPI_NAME: 'SNACITO',
     YOUR_WA_NUMBER: '919644679988',
-    EMAILJS_PUBLIC: 'gpa_WIcSR9HBprfFA',
-    EMAILJS_SERVICE: 'service_3zd91hn',
-    EMAILJS_TEMPLATE: 'template_xqv5u6c',
     BUSINESS_EMAIL: 'kaushalmalvi412@gmail.com',
     SUPABASE_URL: 'https://iezszlgxyqizdqazrner.supabase.co',
     SUPABASE_KEY: 'sb_publishable_Wy7qNiMG3d_GXmes2-htUw_TKkFi611'
 };
 
 
-try { emailjs.init({ publicKey: CONFIG.EMAILJS_PUBLIC }); } catch (e) { }
 
 // ─── Serial Order ID (format: SNK-DDMM-NNNN, synced from Supabase) ───
 async function generateOrderId() {
@@ -68,7 +64,7 @@ document.querySelectorAll('.item-row .qty-btn').forEach(btn => {
         const row = wrap.closest('.item-row');
         if (row) {
             row.classList.toggle('is-added', v > 0);
-            if (row.dataset.name === "Chips-Chaat Bag") {
+            if (row.dataset.name === "BYOB") {
                 updateBYOBBlocks(v);
             } else if (row.dataset.name && row.dataset.name.startsWith('Choco Puffs')) {
 
@@ -246,6 +242,10 @@ function recalcOrder() {
         const fRadio = block.querySelector(`input[name="bag-${bagIdx}-flavour"]:checked`);
         const flav = fRadio ? fRadio.value : '';
 
+        if (flav === 'Doritos') {
+            total += 10;
+        }
+
         let bagAddons = [];
         block.querySelectorAll(`input[data-bag-param="${bagIdx}"]:checked`).forEach(cb => {
             const aName = cb.dataset.name;
@@ -336,18 +336,14 @@ document.getElementById('btn-back-1').addEventListener('click', () => showStep(1
 
 document.getElementById('btn-to-step3').addEventListener('click', () => {
     const nameEl = document.getElementById('f-name');
-    const emailEl = document.getElementById('f-email');
     const phoneEl = document.getElementById('f-phone');
     const phoneWrap = phoneEl.closest('.phone-wrap');
     let ok = true;
 
-    [nameEl, emailEl, phoneEl].forEach(el => el.classList.remove('error'));
+    [nameEl, phoneEl].forEach(el => el.classList.remove('error'));
     phoneWrap.classList.remove('error');
 
     if (!nameEl.value.trim()) { nameEl.classList.add('error'); nameEl.focus(); ok = false; }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailEl.value.trim())) {
-        emailEl.classList.add('error'); if (ok) emailEl.focus(); ok = false;
-    }
     if (!/^\d{10}$/.test(phoneEl.value.trim())) {
         phoneWrap.classList.add('error'); if (ok) phoneEl.focus(); ok = false;
     }
@@ -355,7 +351,6 @@ document.getElementById('btn-to-step3').addEventListener('click', () => {
 
     state.customer = {
         name: nameEl.value.trim(),
-        email: emailEl.value.trim(),
         phone: phoneEl.value.trim(),
         rollno: null,
         note: document.getElementById('f-note').value.trim(),
@@ -376,11 +371,12 @@ function buildSummary() {
       <span class="summary-item-price">₹${item.price * item.qty}</span>
     </div>`;
 
-        if (item.name === "Chips-Chaat Bag") {
+        if (item.name === "BYOB") {
             state.bagDetails.forEach(bag => {
+                const premium = bag.flavour === 'Doritos' ? 10 : 0;
                 html += `<div class="summary-sub-item">
           <span class="summary-sub-name">Bag ${bag.index}: ${bag.flavour}</span>
-          <span class="summary-sub-price">+₹0</span>
+          <span class="summary-sub-price">+₹${premium}</span>
         </div>`;
                 bag.addons.forEach(a => {
                     html += `<div class="summary-sub-item">
@@ -430,9 +426,10 @@ function buildOrderNote() {
     const lines = [];
     state.items.forEach(item => {
         lines.push(`${item.name} × ${item.qty} = ₹${item.price * item.qty}`);
-        if (item.name === "Chips-Chaat Bag") {
+        if (item.name === "BYOB") {
             state.bagDetails.forEach(bag => {
-                lines.push(`  └─ Bag ${bag.index}: ${bag.flavour}`);
+                const premium = bag.flavour === 'Doritos' ? ' (+₹10)' : '';
+                lines.push(`  └─ Bag ${bag.index}: ${bag.flavour}${premium}`);
                 bag.addons.forEach(a => lines.push(`     └─ Add-On: ${a.name} (+₹${a.price})`));
             });
         }
@@ -529,7 +526,6 @@ document.getElementById('btn-paid').addEventListener('click', async () => {
     btn.textContent = 'Confirming…';
 
     saveOrder();
-    await Promise.allSettled([sendEmail(), sendOwnerEmail()]);
     closeUPIModal();
     showSuccess();
 });
@@ -541,7 +537,6 @@ async function saveOrder() {
     const payload = {
         order_id: state.orderId,
         name: state.customer.name,
-        email: state.customer.email,
         phone: state.customer.phone,
         amount: state.paymentMethod === 'online' ? state.total : 0,
         items: buildOrderNote(),
@@ -566,48 +561,6 @@ async function saveOrder() {
 }
 
 
-async function sendEmail() {
-    if (!CONFIG.EMAILJS_SERVICE) return;
-    try {
-        const r = await emailjs.send(CONFIG.EMAILJS_SERVICE, CONFIG.EMAILJS_TEMPLATE, {
-            to_name: state.customer.name,
-            to_email: state.customer.email,
-            order_id: state.orderId,
-            order_date: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }),
-            pickup_date: 'March 27-29, 2026 — Spardha @ Main Sports Ground, JKLU',
-            order_items: buildOrderNote(),
-            order_total: '\u20b9' + state.total,
-            advance_paid: state.paymentMethod === 'online' ? '\u20b9' + state.total + ' (Paid Online)' : 'Pay at Counter',
-            balance_due: state.paymentMethod === 'online' ? '\u20b90 — Fully Paid' : '\u20b9' + state.total,
-            customer_phone: '+91 ' + state.customer.phone,
-        });
-        console.log('[EmailJS] Customer email OK:', r.status, r.text);
-    } catch (e) {
-        console.error('[EmailJS] Customer email FAILED — status:', e.status, '| text:', e.text, '| full:', e);
-    }
-}
-
-
-async function sendOwnerEmail() {
-    if (!CONFIG.EMAILJS_SERVICE) return;
-    try {
-        const r = await emailjs.send(CONFIG.EMAILJS_SERVICE, CONFIG.EMAILJS_TEMPLATE, {
-            to_name: 'Kaushal (SNACITO)',
-            to_email: CONFIG.BUSINESS_EMAIL,
-            order_id: state.orderId,
-            order_date: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }),
-            pickup_date: 'March 27-29, 2026 — Spardha @ Main Sports Ground, JKLU',
-            order_items: buildOrderNote(),
-            order_total: '\u20b9' + state.total,
-            advance_paid: state.paymentMethod === 'online' ? '\u20b9' + state.total + ' (Paid Online)' : 'Pay at Counter',
-            balance_due: state.paymentMethod === 'online' ? '\u20b90 — Fully Paid' : '\u20b9' + state.total,
-            customer_phone: '+91 ' + state.customer.phone,
-        });
-        console.log('[EmailJS] Owner notification OK:', r.status, r.text);
-    } catch (e) {
-        console.error('[EmailJS] Owner notification FAILED — status:', e.status, '| text:', e.text, '| full:', e);
-    }
-}
 
 
 
@@ -646,7 +599,7 @@ function buildWhatsAppConfirmation() {
         `🛒 *Items:*${itemLines}\n\n` +
         `💰 *Total:* ₹${state.total}\n` +
         `${payText}\n\n` +
-        `📍 Pick up at *SNACITO Stall*, Main Sports Ground, JKLU\n` +
+        `📍 Pick up at *SNACITO Stall*, Near GH-1 and Sabrang Ground\n` +
         `📅 27-29 March 2026\n\n` +
         `See you there! 🤙`;
 }

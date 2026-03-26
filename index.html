@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SNACITO — Premium Midnight Snacks</title>
   <meta name="description"
-    content="Fresh, handcrafted snacks at SNACITO. Chips-Chaat, Maggi, Momos. Find us at Spardha, Tech Lawn, JKLU." />
+    content="Fresh, handcrafted snacks at SNACITO. BYOB, Maggi, Momos. Find us Near GH-1 and Sabrang Ground." />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 
@@ -15,14 +15,14 @@
   <!-- Ticker Setup -->
   <div class="ticker-wrap" aria-hidden="true">
     <div class="ticker-track">
-      <span>Fresh & Handcrafted</span><span>Chips-Chaat</span><span>Late Night Cravings</span><span>Spardha 2026</span>
-      <span>Fresh & Handcrafted</span><span>Chips-Chaat</span><span>Late Night Cravings</span><span>Tech Lawn, JKLU</span>
+      <span>Fresh & Handcrafted</span><span>BYOB</span><span>Late Night Cravings</span><span>Near GH-1 and Sabrang Ground</span>
+      <span>Fresh & Handcrafted</span><span>BYOB</span><span>Late Night Cravings</span><span>Near GH-1 and Sabrang Ground</span>
     </div>
   </div>
 
   <!-- Hero Section -->
   <header class="hero">
-    <div class="hero-badge">⭐ Spardha, Tech Lawn, JKLU ⭐</div>
+    <div class="hero-badge">⭐ Near GH-1 and Sabrang Ground ⭐</div>
     <img src="assets/Snacito Logo.png" alt="SNACITO" class="hero-main-logo">
     <h1 class="hero-tagline">Late Night Cravings, Sorted.</h1>
     <p class="hero-subtag">Indulge in artisanal midnight snacks. From Belgian decadence to savory street-style chaat,
@@ -33,10 +33,10 @@
   <div class="nav-wrapper">
     <nav class="nav-tabs" id="nav-tabs">
       <button class="nav-tab active" onclick="showSection('all')" id="tab-all">Full Menu</button>
-      <button class="nav-tab" onclick="showSection('byob')" id="tab-byob">🍟 Chips-Chaat</button>
+      <button class="nav-tab" onclick="showSection('byob')" id="tab-byob">🍟 BYOB</button>
       <button class="nav-tab" onclick="showSection('maggi')" id="tab-maggi">🍜 Maggi</button>
       <button class="nav-tab" onclick="showSection('momos')" id="tab-momos">🥟 Momos</button>
-      <button class="nav-tab" onclick="showSection('drinks')" id="tab-drinks">🥤 Drinks</button>
+      <button class="nav-tab" onclick="showSection('drinks')" id="tab-drinks">🥤 Nimbu Pani</button>
     </nav>
   </div>
 
@@ -46,8 +46,8 @@
     <section class="category active" id="section-byob">
       <div class="category-header">
         <span class="category-icon">🍟</span>
-        <h2 class="category-title">Chips-Chaat</h2>
-        <p class="category-desc">The ultimate late-night savory mix</p>
+        <h2 class="category-title">BYOB</h2>
+        <p class="category-desc">Normal Bag with Veggies (Pyaz &amp; Tamatar)</p>
       </div>
 
       <div class="byob-wrapper">
@@ -69,6 +69,7 @@
               <span class="flavour-chip">Blue Lays</span><span class="flavour-chip">OG Kurkure</span>
               <span class="flavour-chip">Doritos</span>
             </div>
+            <div style="font-size: 0.85rem; color: var(--brand-gold-light); margin-top: 10px; font-weight: 600; font-style: italic; letter-spacing: 0.5px;">* ₹ 10 extra for Doritos</div>
           </div>
           <div class="byob-addons">
             <strong
@@ -128,15 +129,15 @@
         </div>
         <div class="menu-item" style="padding: 1.2rem 1.5rem; border-radius: 12px; display: flex; justify-content: space-between; align-items: center;">
           <span class="item-name">Fried</span>
-          <span class="item-price">₹ 69</span>
-        </div>
-        <div class="menu-item" style="padding: 1.2rem 1.5rem; border-radius: 12px; display: flex; justify-content: space-between; align-items: center;">
-          <span class="item-name" style="display: flex; align-items: center; flex-wrap: wrap;">Kurkure <span class="badge recommended" style="margin-left: 8px;">Recommended</span></span>
           <span class="item-price">₹ 79</span>
         </div>
         <div class="menu-item" style="padding: 1.2rem 1.5rem; border-radius: 12px; display: flex; justify-content: space-between; align-items: center;">
+          <span class="item-name" style="display: flex; align-items: center; flex-wrap: wrap;">Tandoori Fried <span class="badge recommended" style="margin-left: 8px;">New</span></span>
+          <span class="item-price">₹ 99</span>
+        </div>
+        <div class="menu-item" style="padding: 1.2rem 1.5rem; border-radius: 12px; display: flex; justify-content: space-between; align-items: center;">
           <span class="item-name">Chipotle Fried</span>
-          <span class="item-price">₹ 89</span>
+          <span class="item-price">₹ 99</span>
         </div>
       </div>
     </section>
@@ -145,14 +146,26 @@
     <section class="category active" id="section-drinks" style="margin-top: 6rem;">
       <div class="category-header">
         <span class="category-icon">🥤</span>
-        <h2 class="category-title">Drinks</h2>
+        <h2 class="category-title">Nimbu Pani</h2>
         <p class="category-desc">Freshly squeezed lemonade</p>
       </div>
-      <div class="byob-wrapper">
+      <div class="byob-wrapper" style="display: flex; flex-direction: column; gap: 1.5rem;">
         <div class="byob-card" style="padding-bottom: 2rem;">
           <div class="byob-top" style="border-bottom: none; padding-bottom: 0; margin-bottom: 0;">
             <div style="flex:1;">
-              <div class="byob-item-name">OG Nimbu Pani</div>
+              <div class="byob-item-name">With Soda</div>
+              <div class="byob-item-sub" style="opacity: 0.8;">Chilled & Refreshing</div>
+            </div>
+            <div style="text-align: right;">
+              <span style="font-size: 0.75rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #fff; display: block; margin-bottom: 5px;">Price</span>
+              <div class="byob-item-price" style="font-size: 3rem; font-weight: 800; color: #fff; line-height: 1;">₹ 20</div>
+            </div>
+          </div>
+        </div>
+        <div class="byob-card" style="padding-bottom: 2rem;">
+          <div class="byob-top" style="border-bottom: none; padding-bottom: 0; margin-bottom: 0;">
+            <div style="flex:1;">
+              <div class="byob-item-name">Without Soda</div>
               <div class="byob-item-sub" style="opacity: 0.8;">Chilled & Refreshing</div>
             </div>
             <div style="text-align: right;">
@@ -189,8 +202,8 @@
         <h4>Find The Stall</h4>
         <p style="color: var(--text-muted); line-height: 1.6;">
           <strong>Spardha (27-29 March)</strong><br>
-          Tech Lawn, JK Lakshmipat University<br>
-          Mahapura, Jaipur<br>
+          Near GH-1 and Sabrang Ground<br>
+          JK Lakshmipat University<br>
           Rajasthan - 302026
         </p>
         <a href="https://maps.app.goo.gl/oAqVafQZNmhE263v9" target="_blank" class="footer-btn-map">Open Map ↗</a>

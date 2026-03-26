@@ -1,6 +1,6 @@
 # SNACITO — The Complete Digital Platform 🍫
 
-A premium, full-featured web application for **SNACITO**, a handcrafted snack brand at HackJKLU v5.0, Tech Lawn, JKLU.
+A premium, full-featured web application for **SNACITO**, a handcrafted snack brand at HackJKLU v5.0, Near GH-1 and Sabrang Ground
 This repository contains the complete three-part frontend platform: the Digital Menu, the Online-Order Wizard, and the Admin Panel. 
 
 Built entirely with pure HTML, CSS, and Vanilla JavaScript (zero frameworks).
@@ -32,11 +32,10 @@ An elegant, fine-dining inspired digital menu. Features smooth scroll-reveals, s
 
 ### 2. The Online-Order Wizard (`/online-order`)
 A highly dynamic, mobile-first ordering experience:
-* **Dynamic Form Generation:** "Mini Choco Puffs" and "Chips-Chaat" dynamically generate individual sub-configuration blocks (e.g., "Pack 1", "Pack 2") based on quantity selected, allowing per-item customization (Milk/Dark/Mix coatings + Addons).
+* **Dynamic Form Generation:** "Mini Choco Puffs" and "BYOB" dynamically generate individual sub-configuration blocks (e.g., "Pack 1", "Pack 2") based on quantity selected, allowing per-item customization (Milk/Dark/Mix coatings + Addons).
 * **Live Cart Calculation:** Real-time calculation of totals, mix-premiums, addon costs, and the 50% UPI advance requirement.
 * **Integrations:**
-    * **EmailJS:** Sends professional, HTML-formatted email receipts to customers and blind-copies to the owner.
-    * **Supabase:** Pushes the finalized order securely to a PostgreSQL database.
+    * **Supabase:** Securely stores order details for real-time tracking via the Admin Panel.
     * **Payments:** Core logic for UPI intent generation and dynamic QR Code generation for 50% advance.
 
 ### 3. The Admin Dashboard (`/admin`)
