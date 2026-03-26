@@ -461,7 +461,6 @@ document.getElementById('btn-pay-counter').addEventListener('click', async () =>
     state.orderId = await generateOrderId();
 
     await saveOrder();
-    await Promise.allSettled([sendEmail(), sendOwnerEmail()]);
     showSuccess();
 
     btn.disabled = false;
