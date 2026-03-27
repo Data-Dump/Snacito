@@ -593,7 +593,7 @@ function buildWhatsAppConfirmation() {
         `🛒 *Items:*${itemLines}\n\n` +
         `💰 *Total:* ₹${state.total}\n` +
         `${payText}\n\n` +
-        `📍 Pick up at *SNACITO Stall*, Near GH-2 and Sabrang Ground\n` +
+        `📍 Pick up at *SNACITO Stall*, Vollyball Ground\n` +
         `📅 27-29 March 2026\n\n` +
         `See you there! 🤙`;
 }
