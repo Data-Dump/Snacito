@@ -177,8 +177,11 @@ function updateBYOBBlocks(qty) {
             html += `<div class="flavour-label" style="margin-bottom: 8px;">1. Select Flavour</div>`;
             html += `<div class="flavour-chips" style="display:flex; flex-wrap:wrap; gap:6px;">`;
             BYOB_FLAVOURS.forEach((f, idx) => {
-                const checked = (idx === 0) ? 'checked' : '';
-                html += `<label class="flavour-chip"><input type="radio" name="bag-${i}-flavour" value="${f}" onchange="recalcOrder()" ${checked}><span>${f}</span></label>`;
+                const isDoritos = f === 'Doritos';
+                const checked = (!isDoritos && idx === 0) ? 'checked' : '';
+                const disabled = isDoritos ? 'disabled' : '';
+                const disabledClass = isDoritos ? 'disabled' : '';
+                html += `<label class="flavour-chip ${disabledClass}"><input type="radio" name="bag-${i}-flavour" value="${f}" onchange="recalcOrder()" ${checked} ${disabled}><span>${f}${isDoritos ? ' (Out of Stock)' : ''}</span></label>`;
             });
             html += `</div></div>`;
 

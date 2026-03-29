@@ -559,6 +559,16 @@ h1, h2, h3, h4 { font-family: 'Playfair Display', serif; color: var(--brand-brow
     user-select: none;
 }
 .flavour-chip:hover { border-color: var(--brand-gold); }
+.flavour-chip.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: #eee;
+    border-color: #ccc;
+    color: #999;
+}
+.flavour-chip.disabled:hover {
+    border-color: #ccc;
+}
 .flavour-chip input { display: none; }
 .flavour-chip:has(input:checked) { 
     border-color: var(--brand-brown); 
